@@ -1,0 +1,28 @@
+.span-el {
+  color: #0ecc25;
+}
+
+.MuiDrawer-paper {
+  width: 240px;
+  align-items: center;
+}
+
+.MuiList-root {
+  width: 100%;
+}
+.search-input {
+  width: 200px;
+  height: 25px;
+  outline: 0;
+  border-radius: 5px;
+  border: 1px solid rgb(231, 231, 231);
+  padding-left: 10px;
+}
+@media (max-width: 765px) {
+  .search-input {
+    width: 120px;
+  }
+}
+app-bar {
+  color: rgb(194, 194, 194);
+}
