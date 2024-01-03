@@ -11,7 +11,7 @@ const adminTokenValidator = asyncHandler(async (req, res, next) => {
 
   if (authHeader && authHeader.startsWith("Bearer")) {
     token = authHeader.split(" ")[1];
-    if (!token) {
+    if (!token) { 
       res.status(401);
       throw new Error("user is not authorized or token is missing");
     }
@@ -23,12 +23,12 @@ const adminTokenValidator = asyncHandler(async (req, res, next) => {
       // console.log(decoded);
 
       req.user = decoded.admin;
-      // next()
+      next()
     });
   } else {
     console.log("some error occured !");
   }
-  next();
+  
 });
 
 module.exports = adminTokenValidator;

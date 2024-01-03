@@ -8,7 +8,7 @@ function UserLoginPage() {
   const location = useLocation();
   const pathname = location.pathname;
 
-  return ( 
+  return (
     <>
       <StdNavBar />
 

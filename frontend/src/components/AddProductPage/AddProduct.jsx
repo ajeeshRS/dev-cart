@@ -176,7 +176,7 @@ function AddProduct({ admin }) {
       ) : (
         <Grid md={12} width={"100%"} height={"90svh"} pt={10}>
           <Typography>This is a private route</Typography>
-          <Link to={"/admin-login"}>Please login</Link>
+          <Link to={"/admin/login"}>Please login</Link>
         </Grid>
       )}
     </div>

@@ -6,7 +6,7 @@ function UserHome() {
   return (
     <>
       <NavBar />
-      <Home/>
+      <Home />
     </>
   );
 }

@@ -23,10 +23,10 @@ body {
 }
 .banner-button {
   margin-top: 10px;
-  background: #0ecc25;
+  background: #7E30E1;
   color: #ffff;
   border-radius: 4px;
-  border: 1px solid #0ecc25;
+  border: 1px solid #7E30E1;
   width: 150px;
   height: 35px;
   transition: 0.3s ease-in-out;
@@ -35,6 +35,36 @@ body {
 .banner-button:hover {
   background: #ffff;
   cursor: pointer;
-  color: #0ecc25;
+  color: #7E30E1;
   border: 1px solid #fff;
 }
+
+.add-to-cart-btn {
+  cursor: pointer;
+  font-family: 'poppins';
+  font-weight: 500;
+  font-size: 15px;
+  width: 150px;
+  height: 40px;
+  border: 1px solid #7E30E1;
+  border-radius: 3px;
+  margin-left: 20px;
+  background:#7E30E1 ;
+  color: #fff;
+  transition: .3s ease-in-out;
+}
+.add-to-cart-btn:hover{
+  background: #fff;
+  border: 1px solid rgb(235, 235, 235);
+  color: #7E30E1;
+}
+.typo {
+  color: #000;
+  font-family: 'poppins';
+}
+a{
+  text-decoration: none;
+}
+
+
+

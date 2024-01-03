@@ -26,7 +26,7 @@ function UserLogin() {
         localStorage.setItem("token", token);
         if (token) {
           alert("login success");
-          navigate("/private-page");
+          navigate("/user/home");
         }
       })
       .catch((err) => console.log(err.message));

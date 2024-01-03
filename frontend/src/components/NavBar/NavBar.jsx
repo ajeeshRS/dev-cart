@@ -9,10 +9,27 @@ import {
 } from "@mui/material";
 import { AccountCircle, SearchOutlined } from "@mui/icons-material";
 import DrawerComponent from "./DrawerComponent";
+import { useState } from "react";
+import axios from "axios";
+import { useLocation } from 'react-router-dom';
 
 function NavBar() {
+
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
+  const [searchQuery,setSearchQuery]= useState('')
+  const location = useLocation()
+
+  const handleOnChange =(e)=>{
+      setSearchQuery(e.target.value);
+  }
+
+  const searchButton=async()=>{
+    // const res = await axios.get("http://localhost:3001/user/search")
+
+    setSearchQuery('')
+  }
+
 
   return (
     <AppBar
@@ -21,7 +38,7 @@ function NavBar() {
       className="app-bar"
       sx={{
         height: "10svh",
-        backgroundColor: "#f8f0fb",
+        backgroundColor: "#FCFDF2",
         boxShadow: "0px 1px 5px 0px rgb(194, 194, 194)",
       }}
     >
@@ -57,12 +74,12 @@ function NavBar() {
               cursor: "pointer",
             }}
           >
-            Dev Cart<span className="span-el">.</span>
+            Dev Cart<span className="span-el" style={{color:'#'}}>.</span>
           </Typography>
         </Grid>
         <Grid md={4}>
-          <input className="search-input" placeholder="Search product" />
-          <IconButton color="black" size="large">
+          <input onChange={handleOnChange} type="text" value={searchQuery} className="search-input" placeholder="Search product" />
+          <IconButton onClick={searchButton} color="black" size="large">
             <SearchOutlined />
           </IconButton>
         </Grid>
@@ -88,15 +105,16 @@ function NavBar() {
           ) : (
             <>
               <Typography
+              className="nav-items"
                 sx={{
                   cursor: "pointer",
                   fontFamily: "montserrat",
                   fontWeight: "600",
                 }}
-              >
-                Home
+              >Home
               </Typography>
               <Typography
+              className="nav-items"
                 sx={{
                   cursor: "pointer",
                   fontFamily: "montserrat",

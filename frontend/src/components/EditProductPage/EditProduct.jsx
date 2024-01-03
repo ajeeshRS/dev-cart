@@ -88,14 +88,14 @@ function EditProduct({ admin }) {
   return (
     <>
       {admin ? (
-        <Grid md={12} width={"100%"} height={"90svh"} pt={10}>
+        <Grid md={12} width={"100%"} height={"90svh"} pt={7}>
           <Grid
             md={12}
             width={"100%"}
             height={"10svh"}
             display={"flex"}
             justifyContent={"center"}
-            pt={5}
+            pt={3}
           >
             <Typography sx={{ fontFamily: "montserrat", fontWeight: 600 }}>
               EDIT PRODUCT
@@ -107,6 +107,7 @@ function EditProduct({ admin }) {
             display={"flex"}
             flexDirection={"column"}
             alignItems={"center"}
+            pb={5}
           >
             <form
               method="patch"
@@ -164,7 +165,7 @@ function EditProduct({ admin }) {
               />
 
               <Button
-                sx={{ width: "350px", marginTop: "15px" }}
+                sx={{ width: "350px", marginTop: "15px",marginBottom:'10px' }}
                 variant="contained"
                 type="submit"
               >

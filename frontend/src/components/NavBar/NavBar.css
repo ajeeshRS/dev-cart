@@ -1,5 +1,5 @@
 .span-el {
-  color: #0ecc25;
+  color: #7E30E1;
 }
 
 .MuiDrawer-paper {
@@ -25,4 +25,27 @@
 }
 app-bar {
   color: rgb(194, 194, 194);
+}
+
+.nav-items {
+  display: inline-block;
+  position: relative;
+  color: #171818;
+}
+.nav-items::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #7E30E1;
+  transform-origin: bottom ;
+  transition: transform 0.25s ease-out;
+}
+
+.nav-items:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom ;
 }

@@ -21,7 +21,7 @@ function StdNavBar() {
       className="app-bar"
       sx={{
         height: "10svh",
-        backgroundColor: "#f8f0fb",
+        backgroundColor: "#FCFDF2",
         boxShadow: "0px 1px 5px 0px rgb(194, 194, 194)",
       }}
     >
