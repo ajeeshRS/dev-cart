@@ -4,8 +4,14 @@ import { Button, Grid, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
-import { ToastContainer } from 'react-toastify';
-import { notify, notifyAccount, notifyBadRequest, notifyPasswordErr, notifyUserExists } from "../../../utils/toastify";
+import { ToastContainer } from "react-toastify";
+import {
+  notify,
+  notifyAccount,
+  notifyBadRequest,
+  notifyPasswordErr,
+  notifyUserExists,
+} from "../../../utils/toastify";
 
 function UserSignup() {
   const [userFormData, setuserFormData] = useState({
@@ -24,34 +30,30 @@ function UserSignup() {
 
   const submitUserData = async (e) => {
     e.preventDefault();
-  
+
     try {
       const isMatch = userFormData.password === userFormData.confirmPassword;
-  
+
       if (isMatch) {
-        const response = await axios.post("http://localhost:3001/user/signup", { userFormData });
-        
-        if(response.status === 200){
-          notifyAccount()
+        const response = await axios.post("http://localhost:3001/user/signup", {
+          userFormData,
+        });
+
+        if (response.status === 200) {
+          notifyAccount();
         }
         setuserFormData(nullData);
-
       } else {
-        notifyPasswordErr()
+        notifyPasswordErr();
       }
     } catch (err) {
-      if(err.status===401){
-        notifyBadRequest()
-      }else{
-        notifyUserExists()
-
+      if (err.status === 401) {
+        notifyBadRequest();
+      } else {
+        notifyUserExists();
       }
-
-      
-      
     }
   };
-  
 
   const valueChange = (e) => {
     e.preventDefault();
@@ -72,8 +74,12 @@ function UserSignup() {
       justifyContent={"center"}
       alignItems={"center"}
     >
-    <Grid pb={5}>
-      <Typography sx={{fontFamily:"montserrat",fontWeight:600,fontSize:"22px"}}>User Signup</Typography>
+      <Grid pb={5}>
+        <Typography
+          sx={{ fontFamily: "montserrat", fontWeight: 600, fontSize: "22px" }}
+        >
+          User Signup
+        </Typography>
       </Grid>
       <Grid md={12} display={"flex"} flexDirection={"column"}>
         <form
@@ -135,15 +141,17 @@ function UserSignup() {
             >
               Signup
             </Button>
-            <ToastContainer position="top-center"
-autoClose={3000}
-hideProgressBar={true}
-newestOnTop={false}
-closeOnClick
-rtl={false}
-pauseOnFocusLoss
-draggable
-theme="light"/>
+            <ToastContainer
+              position="top-center"
+              autoClose={3000}
+              hideProgressBar={true}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              theme="light"
+            />
           </Grid>
         </form>
         <Grid md={12} display={"flex"} justifyContent={"center"} mt={3}>
@@ -157,7 +165,6 @@ theme="light"/>
               Login
             </Link>{" "}
           </Typography>
-          
         </Grid>
       </Grid>
     </Grid>

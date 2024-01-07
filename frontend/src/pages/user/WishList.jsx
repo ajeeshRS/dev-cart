@@ -16,7 +16,7 @@ import "../../styles/ViewProduct.css";
 
 function WishList() {
   const [wishList, setWishList] = useState([]);
-  const [loading,setLoading] =useState(true)
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const fetchProductDetails = async () => {
@@ -25,7 +25,7 @@ function WishList() {
         headers: getHeaders(),
       });
       setWishList(response.data);
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -79,7 +79,10 @@ function WishList() {
                 Wishlist
               </Typography>
               <Grid position={"absolute"} right={30}>
-                <IconButton sx={{ color: "white" }} onClick={()=>navigate("/user/cart")}>
+                <IconButton
+                  sx={{ color: "white" }}
+                  onClick={() => navigate("/user/cart")}
+                >
                   <ShoppingCartOutlinedIcon />
                 </IconButton>
               </Grid>
@@ -98,7 +101,7 @@ function WishList() {
           alignItems={"center"}
         >
           <Typography sx={{ color: "grey", fontFamily: "montserrat" }}>
-Loading...
+            Loading...
           </Typography>
         </Grid>
       ) : (
@@ -168,22 +171,21 @@ Loading...
           </Grid>
         ))
       )}
-      {
-         wishList.length===0 && loading===false && <Grid
-         md={12}
-         pt={10}
-         width={"100%"}
-         height={"90svh"}
-         display={"flex"}
-         justifyContent={"center"}
-         alignItems={"center"}
-       >
-         <Typography sx={{ color: "grey", fontFamily: "montserrat" }}>
-           Your wishlist is currently empty. Add some products you love!
-         </Typography>
-       </Grid>
-
-      }
+      {wishList.length === 0 && loading === false && (
+        <Grid
+          md={12}
+          pt={10}
+          width={"100%"}
+          height={"90svh"}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <Typography sx={{ color: "grey", fontFamily: "montserrat" }}>
+            Your wishlist is currently empty. Add some products you love!
+          </Typography>
+        </Grid>
+      )}
     </>
   );
 }

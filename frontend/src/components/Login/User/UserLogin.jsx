@@ -3,7 +3,7 @@ import { Button, Grid, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import "./UserLogin.css";
 import axios from "axios";
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 import { notifyBadRequest } from "../../../utils/toastify";
 
 function UserLogin() {
@@ -31,10 +31,9 @@ function UserLogin() {
           navigate("/user/home");
         }
       })
-      .catch((err) =>{
-        
-       console.log(err.message)
-       notifyBadRequest()
+      .catch((err) => {
+        console.log(err.message);
+        notifyBadRequest();
       });
 
     setLoginData(nullData);
@@ -60,7 +59,11 @@ function UserLogin() {
       alignItems={"center"}
     >
       <Grid pb={5}>
-      <Typography sx={{fontFamily:"montserrat",fontWeight:600,fontSize:"22px"}}>User Login</Typography>
+        <Typography
+          sx={{ fontFamily: "montserrat", fontWeight: 600, fontSize: "22px" }}
+        >
+          User Login
+        </Typography>
       </Grid>
       <Grid md={12} display={"flex"} flexDirection={"column"}>
         <form
@@ -97,15 +100,17 @@ function UserLogin() {
             >
               Login
             </Button>
-            <ToastContainer position="top-center"
-autoClose={3000}
-hideProgressBar={true}
-newestOnTop={false}
-closeOnClick
-rtl={false}
-pauseOnFocusLoss
-draggable
-theme="light"/>
+            <ToastContainer
+              position="top-center"
+              autoClose={3000}
+              hideProgressBar={true}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              theme="light"
+            />
           </Grid>
         </form>
 

@@ -21,16 +21,14 @@ function App() {
         <Route path="/admin/add-product" element={<AddProductPage />} />
         <Route path="/admin/all-products" element={<AllProductsPage />} />
         <Route path="/admin/Edit-product/:id" element={<EditProductPage />} />
-        <Route path="user/home" element={<UserHome/>} />
-        <Route path="user/:category" element={<ProductPageOnCategory/>} />
-        <Route path="user/view-product/:id" element={<ViewProduct/>} />
-        <Route path="user/wishlist" element={<WishList/>} />
-        <Route path="user/cart" element={<UserCartPage/>} />
+        <Route path="user/home" element={<UserHome />} />
+        <Route path="user/:category" element={<ProductPageOnCategory />} />
+        <Route path="user/view-product/:id" element={<ViewProduct />} />
+        <Route path="user/wishlist" element={<WishList />} />
+        <Route path="user/cart" element={<UserCartPage />} />
       </Routes>
-      
     </>
   );
 }
-
 
 export default App;

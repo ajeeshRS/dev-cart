@@ -4,7 +4,7 @@ const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 const product = require("../models/productModel");
 const wishList = require("../models/userWishlistModel");
-const userCart = require("../models/userCartModel")
+const userCart = require("../models/userCartModel");
 
 // register user
 const registerUser = asyncHandler(async (req, res) => {
@@ -19,7 +19,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const userExists = await user.findOne({ email });
 
   if (userExists) {
-    res.status(400)
+    res.status(400);
     throw new Error("User already exists");
   }
 
@@ -87,7 +87,9 @@ const getProduct = asyncHandler(async (req, res) => {
   const id = req.params.id;
   try {
     const data = await product.findById(id);
-    res.status(200).json({ data: data, message: "product fetched successfully" });
+    res
+      .status(200)
+      .json({ data: data, message: "product fetched successfully" });
   } catch (err) {
     console.log(err);
   }
@@ -184,9 +186,8 @@ const getFavoriteProductDetails = asyncHandler(async (req, res) => {
   }
 });
 
-const addToCart = asyncHandler(async(req,res)=>{
-  
-   try {
+const addToCart = asyncHandler(async (req, res) => {
+  try {
     const userId = req.user.id;
     const productId = req.params.productId;
 
@@ -197,10 +198,10 @@ const addToCart = asyncHandler(async(req,res)=>{
     }
 
     const index = cart.products.indexOf(productId);
-    
-    if (index !==-1 ) {
-      res.status(401).json("product already exists")
-    } else{
+
+    if (index !== -1) {
+      res.status(401).json("product already exists");
+    } else {
       cart.products.push(productId);
       // console.log("product added successfully");
       res.status(200).json("product added to cart successfully");
@@ -210,36 +211,33 @@ const addToCart = asyncHandler(async(req,res)=>{
   } catch (err) {
     console.log(err);
   }
-   
-})
+});
 
-const getCartProducts =asyncHandler(async(req,res)=>{
+const getCartProducts = asyncHandler(async (req, res) => {
   try {
     const userId = req.user.id;
     let cart = await userCart.findOne({ user: userId });
-     if(!cart){
-       res.status(404).json("no cart for this user")
-     }
+    if (!cart) {
+      res.status(404).json("no cart for this user");
+    }
 
-      const populatedCart =await Promise.all(
-        cart.products.map(async(itemId)=>{
-          let cartItem = await product.findById(itemId)
-          return cartItem;
-        })
-      )
+    const populatedCart = await Promise.all(
+      cart.products.map(async (itemId) => {
+        let cartItem = await product.findById(itemId);
+        return cartItem;
+      })
+    );
 
-      if(populatedCart){
-        res.status(200).json(populatedCart)
-      }
-    
+    if (populatedCart) {
+      res.status(200).json(populatedCart);
+    }
   } catch (error) {
     console.log(error);
   }
-})
+});
 
-const deleteFromCart =asyncHandler(async(req,res)=>{
-
-  try{
+const deleteFromCart = asyncHandler(async (req, res) => {
+  try {
     const userId = req.user.id;
     const productId = req.params.productId;
 
@@ -260,36 +258,37 @@ const deleteFromCart =asyncHandler(async(req,res)=>{
       // console.log("Product not found in cart");
       res.status(404).json("Product not found in cart");
     }
+  } catch (error) {
+    console.log(error);
   }
-   catch (error) {
-  console.log(error)
-}
-})
+});
 
-const updateQuantity = asyncHandler(async(req,res)=>{
-try {
-  
-  const productId = req.params.productId
-  const {quantity} = req.body
- 
-    const updatedProduct = await product.findOneAndUpdate({
-      _id:productId
-    },{
-      $set:{quantity}
-    },{
-      new:true
-    })
+const updateQuantity = asyncHandler(async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const { quantity } = req.body;
+
+    const updatedProduct = await product.findOneAndUpdate(
+      {
+        _id: productId,
+      },
+      {
+        $set: { quantity },
+      },
+      {
+        new: true,
+      }
+    );
     if (!updatedProduct) {
-      return res.status(404).json({ success: false, message: 'Product not found.' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found." });
     }
-    res.status(200).json({success:true,updatedProduct})
-  
- 
-} catch (error) {
-  console.log(error)
-}
-})
-
+    res.status(200).json({ success: true, updatedProduct });
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 module.exports = {
   registerUser,
@@ -303,5 +302,5 @@ module.exports = {
   addToCart,
   getCartProducts,
   deleteFromCart,
-  updateQuantity
+  updateQuantity,
 };

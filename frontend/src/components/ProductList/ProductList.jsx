@@ -10,7 +10,7 @@ import { getHeaders } from "../../utils/auth";
 function ProductList() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
- 
+
   //   extracting category name from url
   const { category } = useParams();
 
@@ -38,7 +38,7 @@ function ProductList() {
     fetchKeyboards();
   }, []);
 
-  const [loading,setLoading]=useState(true)
+  const [loading, setLoading] = useState(true);
   // filtering keyboard details from products array
   useEffect(() => {
     if (products.length > 0) {
@@ -46,12 +46,11 @@ function ProductList() {
         (product) => product.category === categoryName
       );
       setFilteredProducts(filtered);
-      setLoading(false)
+      setLoading(false);
     }
   }, [products]);
 
   const [favorites, setFavorites] = useState([]);
- 
 
   const fetchFavorites = async () => {
     try {
@@ -108,87 +107,88 @@ function ProductList() {
 
   return (
     <div className="main-container">
-      {
-      loading===false ? filteredProducts.map((product) => (
+      {loading === false ? (
+        filteredProducts.map((product) => (
+          <Grid
+            md={12}
+            sx={{ cursor: "pointer" }}
+            padding={6}
+            pt={10}
+            border={"1px solid #F8FAE5"}
+            display={"flex"}
+            flexDirection={"row"}
+            justifyContent={"space-between"}
+            width={"100%"}
+            bgcolor={"#fff"}
+            p={5}
+          >
+            <Grid md={4} width={"400px"}>
+              <img
+                className="product-img"
+                src={`http://localhost:3001/uploads/${product.image.filename}`}
+                alt="product-image"
+              />
+            </Grid>
+            <Link to={`/user/view-product/${product._id}`}>
+              <Grid
+                md={4}
+                position={"absolute"}
+                left={300}
+                display={"flex"}
+                height={"150px"}
+                flexDirection={"column"}
+                justifyContent={"space-between"}
+                sx={{ textDecoration: "none" }}
+                color={"black"}
+              >
+                <Typography
+                  fontFamily={"poppins"}
+                  color={"#607274"}
+                  fontWeight={500}
+                >
+                  {product.title}
+                </Typography>
+                <Typography fontFamily={"poppins"} fontWeight={500}>
+                  {product.brand}
+                </Typography>
+                <Typography fontFamily={"poppins"} fontWeight={500}>
+                  {product.description}
+                </Typography>
+                <Typography fontFamily={"montserrat"} fontWeight={600}>
+                  ₹{product.price}
+                </Typography>
+              </Grid>
+            </Link>
+            <Grid md={4}>
+              <IconButton
+                onClick={() => {
+                  toggleFavorite(product._id);
+                }}
+              >
+                {favorites.includes(product._id) ? (
+                  <FavoriteIcon />
+                ) : (
+                  <FavoriteBorder />
+                )}
+              </IconButton>
+            </Grid>
+          </Grid>
+        ))
+      ) : (
         <Grid
           md={12}
-          sx={{ cursor: "pointer" }}
-          padding={6}
           pt={10}
-          border={"1px solid #F8FAE5"}
-          display={"flex"}
-          flexDirection={"row"}
-          justifyContent={"space-between"}
           width={"100%"}
-          bgcolor={"#fff"}
-          p={5}
+          height={"90svh"}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
         >
-          <Grid md={4} width={"400px"}>
-            <img
-              className="product-img"
-              src={`http://localhost:3001/uploads/${product.image.filename}`}
-              alt="product-image"
-              
-            />
-          </Grid>
-          <Link to={`/user/view-product/${product._id}`}>
-            <Grid
-              md={4}
-              position={"absolute"}
-              left={300}
-              display={"flex"}
-              height={"150px"}
-              flexDirection={"column"}
-              justifyContent={"space-between"}
-              sx={{ textDecoration: "none" }}
-              color={"black"}
-            >
-              <Typography
-                fontFamily={"poppins"}
-                color={"#607274"}
-                fontWeight={500}
-              >
-                {product.title}
-              </Typography>
-              <Typography fontFamily={"poppins"} fontWeight={500}>
-                {product.brand}
-              </Typography>
-              <Typography fontFamily={"poppins"} fontWeight={500}>
-                {product.description}
-              </Typography>
-              <Typography fontFamily={"montserrat"} fontWeight={600}>
-                ₹{product.price}
-              </Typography>
-            </Grid>
-          </Link>
-          <Grid md={4}>
-            <IconButton
-              onClick={() => {
-                toggleFavorite(product._id);
-              }}
-            >
-              {favorites.includes(product._id) ? (
-                <FavoriteIcon />
-              ) : (
-                <FavoriteBorder />
-              )}
-            </IconButton>
-          </Grid>
-        </Grid> 
-      )):<Grid
-      md={12}
-      pt={10}
-      width={"100%"}
-      height={"90svh"}
-      display={"flex"}
-      justifyContent={"center"}
-      alignItems={"center"}
-    >
-      <Typography sx={{ color: "grey", fontFamily: "montserrat" }}>
-Loading...
-      </Typography>
-    </Grid>
-    }
+          <Typography sx={{ color: "grey", fontFamily: "montserrat" }}>
+            Loading...
+          </Typography>
+        </Grid>
+      )}
     </div>
   );
 }

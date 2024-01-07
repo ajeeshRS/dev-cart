@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams,Link } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
 import {
   AppBar,
@@ -16,36 +16,31 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { getHeaders } from "../../utils/auth";
 import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
 import Favorite from "@mui/icons-material/Favorite";
-import { ToastContainer } from 'react-toastify';
-import  {notify,notifyErr}  from "../../utils/toastify";
+import { ToastContainer } from "react-toastify";
+import { notify, notifyErr } from "../../utils/toastify";
 function ViewProduct() {
-
-  
-  
   const navigate = useNavigate();
 
   const hanldeBackButton = () => {
     navigate(-1);
   };
   const [product, setProduct] = useState(null);
-  const [cartItemCount,setCartItemCount]=useState([])
+  const [cartItemCount, setCartItemCount] = useState([]);
   const { id } = useParams();
 
-
-
-  const fetchCartItemCount = async()=>{
+  const fetchCartItemCount = async () => {
     try {
-      const res =await axios.get("http://localhost:3001/user/cart",{
-        headers:getHeaders()
-      })
-      setCartItemCount(res.data)
+      const res = await axios.get("http://localhost:3001/user/cart", {
+        headers: getHeaders(),
+      });
+      setCartItemCount(res.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-useEffect(()=>{
-fetchCartItemCount()
-},[cartItemCount])
+  };
+  useEffect(() => {
+    fetchCartItemCount();
+  }, [cartItemCount]);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -66,22 +61,23 @@ fetchCartItemCount()
     fetchProductDetails();
   }, []);
 
-  
-  
-  const handleAddToCartButton =async(productId)=>{
-
+  const handleAddToCartButton = async (productId) => {
     try {
-      const response =await axios.post(`http://localhost:3001/user/cart/${productId}`,{},{
-        headers:getHeaders()
-      })
-      if(response.status==200){
-        notify()
+      const response = await axios.post(
+        `http://localhost:3001/user/cart/${productId}`,
+        {},
+        {
+          headers: getHeaders(),
+        }
+      );
+      if (response.status == 200) {
+        notify();
       }
     } catch (error) {
-      console.log(error)
-      notifyErr()
+      console.log(error);
+      notifyErr();
     }
-  }
+  };
   return (
     <>
       {product ? (
@@ -93,18 +89,20 @@ fetchCartItemCount()
                 position="static"
                 sx={{
                   position: "fixed",
-                  width:"100%",
+                  width: "100%",
                   top: "0px",
                   zIndex: "1",
                   bgcolor: "#fff",
-                 
                 }}
               >
-                <Toolbar variant="dense" sx={{
-                   display:"flex",
-                   flexDirection:"row",
-                   justifyContent:"space-between"
-                }}>
+                <Toolbar
+                  variant="dense"
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
                   <IconButton
                     onClick={() => hanldeBackButton()}
                     edge="start"
@@ -116,14 +114,17 @@ fetchCartItemCount()
                   </IconButton>
                   <Grid md={12}>
                     <Link to={"/user/wishlist"}>
-                  <IconButton sx={{color:"black",marginRight:"10px"}} >
-                    <Favorite/>
-                  </IconButton>
+                      <IconButton sx={{ color: "black", marginRight: "10px" }}>
+                        <Favorite />
+                      </IconButton>
                     </Link>
                     <Link to={"/user/cart"}>
-                  <Badge badgeContent={cartItemCount.length} color="primary">
-                    <ShoppingCartOutlined sx={{color:"black"}}/>
-                  </Badge>
+                      <Badge
+                        badgeContent={cartItemCount.length}
+                        color="primary"
+                      >
+                        <ShoppingCartOutlined sx={{ color: "black" }} />
+                      </Badge>
                     </Link>
                   </Grid>
                 </Toolbar>
@@ -234,19 +235,23 @@ fetchCartItemCount()
                 flexDirection={"row"}
                 justifyContent={"space-between"}
               >
-                <button className="custom-btn" onClick={()=>handleAddToCartButton(product._id)
-                }>Add to cart</button>
+                <button
+                  className="custom-btn"
+                  onClick={() => handleAddToCartButton(product._id)}
+                >
+                  Add to cart
+                </button>
                 <ToastContainer
-position="top-center"
-autoClose={3000}
-hideProgressBar={true}
-newestOnTop={false}
-closeOnClick
-rtl={false}
-pauseOnFocusLoss
-draggable
-theme="light"
-/>
+                  position="top-center"
+                  autoClose={3000}
+                  hideProgressBar={true}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  theme="light"
+                />
                 <button className="custom-btn">Buy now</button>
               </Grid>
             </Grid>
@@ -263,7 +268,7 @@ theme="light"
           alignItems={"center"}
         >
           <Typography sx={{ color: "grey", fontFamily: "montserrat" }}>
-Loading...
+            Loading...
           </Typography>
         </Grid>
       )}

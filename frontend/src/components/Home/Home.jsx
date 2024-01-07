@@ -20,11 +20,10 @@ import image1 from "../../assets/linus-mimietz-01hQvBUC7rI-unsplash.jpg";
 import image2 from "../../assets/martin-garrido-cVUPic1cbd4-unsplash.jpg";
 import image3 from "../../assets/rebekah-yip-wMT0oiL5XjA-unsplash.jpg";
 import { useEffect, useState } from "react";
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 import { notify, notifyErr } from "../../utils/toastify";
 
 function Home() {
-  
   const navigate = useNavigate();
 
   const slides = [
@@ -138,22 +137,24 @@ function Home() {
     navigate("/user/monitors");
   };
 
-const handleAddToCartButton =async(productId)=>{
-
-  try {
-    const response =await axios.post(`http://localhost:3001/user/cart/${productId}`,{},{
-      headers:getHeaders()
-    })
-    // console.log(response.data)
-    if(response.status === 200){
-      notify()
+  const handleAddToCartButton = async (productId) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:3001/user/cart/${productId}`,
+        {},
+        {
+          headers: getHeaders(),
+        }
+      );
+      // console.log(response.data)
+      if (response.status === 200) {
+        notify();
+      }
+    } catch (error) {
+      console.log(error);
+      notifyErr();
     }
-  } catch (error) {
-    console.log(error)
-    notifyErr()
-  }
-}
-
+  };
 
   return (
     <>
@@ -202,7 +203,6 @@ const handleAddToCartButton =async(productId)=>{
                 fontWeight: 600,
                 fontSize: "20px",
               }}
-              
             >
               Keyboards
             </Typography>
@@ -228,7 +228,7 @@ const handleAddToCartButton =async(productId)=>{
                 sx={{
                   width: 290,
                   borderRadius: 3,
-                  border:'1px solid #F3F8FF',
+                  border: "1px solid #F3F8FF",
                   height: 430,
                   boxShadow: "1px 10px 15px -3px rgba(0,0,0,0.1)",
                   position: "relative",
@@ -242,7 +242,11 @@ const handleAddToCartButton =async(productId)=>{
                 />
                 <Link to={`/user/view-product/${product._id}`}>
                   <CardContent>
-                    <Typography fontFamily={'poppins'} variant="h5" sx={{color:"#607274"}}>
+                    <Typography
+                      fontFamily={"poppins"}
+                      variant="h5"
+                      sx={{ color: "#607274" }}
+                    >
                       {product.title}
                     </Typography>
                     <Typography className="typo" pt={2} variant="body2">
@@ -259,30 +263,34 @@ const handleAddToCartButton =async(productId)=>{
                 >
                   <IconButton
                     aria-label="add to favorites"
-                    
                     onClick={() => {
                       toggleFavorite(product._id);
                     }}
                   >
                     {favorites.includes(product._id) ? (
-                      <FavoriteIcon sx={{color:"#C3ACD0"}} />
+                      <FavoriteIcon sx={{ color: "#C3ACD0" }} />
                     ) : (
-                      <FavoriteBorderIcon sx={{color:"black"}} />
+                      <FavoriteBorderIcon sx={{ color: "black" }} />
                     )}
                   </IconButton>
 
-                  <button className="add-to-cart-btn"  onClick={()=>handleAddToCartButton(product._id)}>Add to cart</button>
+                  <button
+                    className="add-to-cart-btn"
+                    onClick={() => handleAddToCartButton(product._id)}
+                  >
+                    Add to cart
+                  </button>
                   <ToastContainer
-position="top-center"
-autoClose={3000}
-hideProgressBar={true}
-newestOnTop={false}
-closeOnClick
-rtl={false}
-pauseOnFocusLoss
-draggable
-theme="light"
-/>
+                    position="top-center"
+                    autoClose={3000}
+                    hideProgressBar={true}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    theme="light"
+                  />
                 </CardActions>
               </Card>
             ))}
@@ -337,7 +345,11 @@ theme="light"
                 />
                 <Link to={`/user/view-product/${product._id}`}>
                   <CardContent>
-                    <Typography fontFamily={'poppins'} variant="h5" sx={{color:"#607274"}}>
+                    <Typography
+                      fontFamily={"poppins"}
+                      variant="h5"
+                      sx={{ color: "#607274" }}
+                    >
                       {product.title}
                     </Typography>
                     <Typography className="typo" pt={2} variant="body2">
@@ -359,17 +371,21 @@ theme="light"
                     }}
                   >
                     {favorites.includes(product._id) ? (
-                      <FavoriteIcon sx={{color:"#C3ACD0"}}/>
+                      <FavoriteIcon sx={{ color: "#C3ACD0" }} />
                     ) : (
-                      <FavoriteBorderIcon sx={{color:"black"}}/>
+                      <FavoriteBorderIcon sx={{ color: "black" }} />
                     )}
                   </IconButton>
-                  <button onClick={() => {
-                      handleAddToCartButton(product._id)
-                    }} className="add-to-cart-btn">Add to cart</button>
+                  <button
+                    onClick={() => {
+                      handleAddToCartButton(product._id);
+                    }}
+                    className="add-to-cart-btn"
+                  >
+                    Add to cart
+                  </button>
                 </CardActions>
               </Card>
-             
             ))}
           </Grid>
           <Grid
@@ -425,7 +441,11 @@ theme="light"
                 />
                 <Link to={`/user/view-product/${product._id}`}>
                   <CardContent>
-                    <Typography fontFamily={'poppins'} variant="h5" sx={{color:"#607274"}}>
+                    <Typography
+                      fontFamily={"poppins"}
+                      variant="h5"
+                      sx={{ color: "#607274" }}
+                    >
                       {product.title}
                     </Typography>
                     <Typography className="typo" pt={2} variant="body2">
@@ -447,14 +467,19 @@ theme="light"
                     }}
                   >
                     {favorites.includes(product._id) ? (
-                      <FavoriteIcon sx={{color:"#C3ACD0"}}/>
+                      <FavoriteIcon sx={{ color: "#C3ACD0" }} />
                     ) : (
-                      <FavoriteBorderIcon sx={{color:"black"}}/>
+                      <FavoriteBorderIcon sx={{ color: "black" }} />
                     )}
                   </IconButton>
-                  <button onClick={() => {
-                      handleAddToCartButton(product._id)
-                    }} className="add-to-cart-btn">Add to cart</button>
+                  <button
+                    onClick={() => {
+                      handleAddToCartButton(product._id);
+                    }}
+                    className="add-to-cart-btn"
+                  >
+                    Add to cart
+                  </button>
                 </CardActions>
               </Card>
             ))}

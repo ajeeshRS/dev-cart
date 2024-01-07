@@ -250,20 +250,23 @@ function UserCartPage() {
           >{`Cart subtotal : ₹${totalAmount.toFixed(2)}`}</Typography>
           <button className="custom-btn">checkout</button>
         </Grid>
-      ) :cartProducts.length === 0 && loading ==false &&(
-        <Grid
-          md={12}
-          pt={10}
-          width={"100%"}
-          height={"90svh"}
-          display={"flex"}
-          justifyContent={"center"}
-          alignItems={"center"}
-        >
-          <Typography sx={{ color: "grey", fontFamily: "montserrat" }}>
-            Your cart is currently empty. Add some products you want to buy!
-          </Typography>
-        </Grid>
+      ) : (
+        cartProducts.length === 0 &&
+        loading == false && (
+          <Grid
+            md={12}
+            pt={10}
+            width={"100%"}
+            height={"90svh"}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <Typography sx={{ color: "grey", fontFamily: "montserrat" }}>
+              Your cart is currently empty. Add some products you want to buy!
+            </Typography>
+          </Grid>
+        )
       )}
     </>
   );
