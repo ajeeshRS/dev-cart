@@ -14,13 +14,13 @@ const authAdmin = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Unauthorised access");
   }
-  res.json({ admin: admin, message: "Access granted" });
+
+  res.status(200).json({ admin: admin, message: "Access granted" });
 });
 
 // login function
 const login = asyncHandler(async (req, res) => {
   const { adminLoginData } = req.body;
-
   const { email, password } = adminLoginData;
 
   if (!email || !password) {
@@ -33,6 +33,7 @@ const login = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("admin not found");
   }
+
   let accessToken;
   if (adminExist && (await bcrypt.compare(password, adminExist.password))) {
     accessToken = jwt.sign(
@@ -68,10 +69,10 @@ const addProduct = asyncHandler(async (req, res) => {
         destination: image.destination,
       },
     });
-    console.log("created product:", newProduct);
+    //console.log("created product:", newProduct);
   }
 
-  res.json({ admin: admin, message: "Data received successfully" });
+  res.status(200).json({ admin: admin, message: "Data received successfully" });
 });
 
 const allProducts = asyncHandler(async (req, res) => {
@@ -80,7 +81,7 @@ const allProducts = asyncHandler(async (req, res) => {
   const products = await product.find();
   // console.log(products);
 
-  res.json({ admin: admin, products: products });
+  res.status(200).json({ admin: admin, products: products });
 });
 
 // home function (protected route)
@@ -133,7 +134,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     console.log(err);
   }
 
-  res.json({
+  res.status(200).json({
     admin: admin,
     message: "This is a response from update server...",
   });
@@ -151,9 +152,9 @@ const deleteProduct = asyncHandler(async (req, res) => {
   const productPath = productExist.image.path;
   if (fs.existsSync(productPath)) {
     fs.unlinkSync(productPath);
-    console.log("file successfully removed");
+    //console.log("file successfully removed");
   } else {
-    console.log("file does not exist!");
+   //console.log("file does not exist!");
   }
   try {
     await productExist.deleteOne();

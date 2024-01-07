@@ -78,7 +78,9 @@ router.patch(
   updateProduct
 );
 
+// get admin
 router.get("/auth-admin", adminTokenValidator, authAdmin);
+
 // delete product
 router.delete("/delete-product/:productId", adminTokenValidator, deleteProduct);
 

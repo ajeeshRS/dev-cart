@@ -66,7 +66,7 @@ function AddProduct({ admin }) {
 
     // Append the image file
     formDataToSend.append("image", productData.image);
-    console.log(formDataToSend);
+    // console.log(formDataToSend);
     try {
       await axios.post(
         "http://localhost:3001/admin/add-product",
@@ -78,7 +78,7 @@ function AddProduct({ admin }) {
           },
         }
       );
-      console.log("Product added successfully");
+      // console.log("Product added successfully");
       resetFormData(); // Reset the form after a successful submission
     } catch (error) {
       console.error("Error adding product:", error);

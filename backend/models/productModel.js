@@ -26,6 +26,10 @@ const productSchema = new mongoose.Schema({
     path: String,
     destination: String,
   },
+  quantity:{
+    type:Number,
+    default:1
+  }
 });
 
 module.exports = mongoose.model("product", productSchema);

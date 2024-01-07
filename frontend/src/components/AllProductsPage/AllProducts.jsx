@@ -37,7 +37,7 @@ function AllProducts({ admin }) {
         headers: getAdminHeaders(),
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         fetchProducts();
       })
       .catch((err) => console.error(err));

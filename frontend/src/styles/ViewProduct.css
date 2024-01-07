@@ -1,24 +1,23 @@
-.custom-btn:hover {
+.custom-btn {
   cursor: pointer;
   font-family: 'poppins';
   font-weight: 500;
   font-size: 15px;
   width: 150px;
-  height: 40px;
+  height: 40px; 
   border: 1px solid #7E30E1;
   border-radius: 3px;
   background:#7E30E1 ;
   color: #fff;
 }
 
-.custom-btn{
+.custom-btn:hover{
   font-size: 15px;
   width: 150px;
   height: 40px;
-    background: #fff;
+    background: #6018be;
     border: 1px solid rgb(235, 235, 235);
-    color: #7E30E1;
-    font-weight: 600;
+    color: #fff;
     border-radius: 5px;
   transition: .3s ease-in-out;
 

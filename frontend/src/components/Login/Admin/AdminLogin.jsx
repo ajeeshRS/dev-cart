@@ -30,7 +30,7 @@ function AdminLogin() {
     await axios
       .post("http://localhost:3001/admin/login", { adminLoginData })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         const adminAccessToken = response.data;
         localStorage.setItem("adminAccessToken", adminAccessToken);
         setAdminLoginData(nullData);

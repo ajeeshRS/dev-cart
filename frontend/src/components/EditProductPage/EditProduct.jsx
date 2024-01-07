@@ -75,7 +75,7 @@ function EditProduct({ admin }) {
       );
 
       if (res.status === 200) {
-        console.log("product updated successfully");
+        // console.log("product updated successfully");
         resetFormData();
       } else {
         console.log(`Request failed with status: ${res.status}`);

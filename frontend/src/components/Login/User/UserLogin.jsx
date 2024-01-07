@@ -3,6 +3,9 @@ import { Button, Grid, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import "./UserLogin.css";
 import axios from "axios";
+import { ToastContainer } from 'react-toastify';
+import { notifyBadRequest } from "../../../utils/toastify";
+
 function UserLogin() {
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
@@ -20,16 +23,19 @@ function UserLogin() {
     await axios
       .post("http://localhost:3001/user/login", { loginData })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         // alert(response.data.accessToken);
         let token = response.data.accessToken;
         localStorage.setItem("token", token);
         if (token) {
-          alert("login success");
           navigate("/user/home");
         }
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) =>{
+        
+       console.log(err.message)
+       notifyBadRequest()
+      });
 
     setLoginData(nullData);
   };
@@ -91,6 +97,15 @@ function UserLogin() {
             >
               Login
             </Button>
+            <ToastContainer position="top-center"
+autoClose={3000}
+hideProgressBar={true}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+theme="light"/>
           </Grid>
         </form>
 

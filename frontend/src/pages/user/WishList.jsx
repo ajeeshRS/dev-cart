@@ -16,6 +16,7 @@ import "../../styles/ViewProduct.css";
 
 function WishList() {
   const [wishList, setWishList] = useState([]);
+  const [loading,setLoading] =useState(true)
   const navigate = useNavigate();
 
   const fetchProductDetails = async () => {
@@ -23,9 +24,8 @@ function WishList() {
       const response = await axios.get("http://localhost:3001/user/wishlist", {
         headers: getHeaders(),
       });
-
-      console.log(response.data);
       setWishList(response.data);
+      setLoading(false)
     } catch (error) {
       console.log(error);
     }
@@ -33,7 +33,7 @@ function WishList() {
 
   useEffect(() => {
     fetchProductDetails();
-  }, []);
+  }, [wishList]);
 
   const removeFromWishList = async (itemId) => {
     try {
@@ -43,7 +43,6 @@ function WishList() {
           headers: getHeaders(),
         }
       );
-
       setWishList((prevWishList) =>
         prevWishList.filter((item) => item._id !== itemId)
       );
@@ -80,7 +79,7 @@ function WishList() {
                 Wishlist
               </Typography>
               <Grid position={"absolute"} right={30}>
-                <IconButton sx={{ color: "white" }}>
+                <IconButton sx={{ color: "white" }} onClick={()=>navigate("/user/cart")}>
                   <ShoppingCartOutlinedIcon />
                 </IconButton>
               </Grid>
@@ -88,7 +87,7 @@ function WishList() {
           </AppBar>
         </Box>
       </Grid>
-      {wishList.length === 0 ? (
+      {loading ? (
         <Grid
           md={12}
           pt={10}
@@ -99,7 +98,7 @@ function WishList() {
           alignItems={"center"}
         >
           <Typography sx={{ color: "grey", fontFamily: "montserrat" }}>
-            Your wishlist is currently empty. Add some products you love!
+Loading...
           </Typography>
         </Grid>
       ) : (
@@ -169,6 +168,22 @@ function WishList() {
           </Grid>
         ))
       )}
+      {
+         wishList.length===0 && loading===false && <Grid
+         md={12}
+         pt={10}
+         width={"100%"}
+         height={"90svh"}
+         display={"flex"}
+         justifyContent={"center"}
+         alignItems={"center"}
+       >
+         <Typography sx={{ color: "grey", fontFamily: "montserrat" }}>
+           Your wishlist is currently empty. Add some products you love!
+         </Typography>
+       </Grid>
+
+      }
     </>
   );
 }

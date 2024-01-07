@@ -20,9 +20,13 @@ import image1 from "../../assets/linus-mimietz-01hQvBUC7rI-unsplash.jpg";
 import image2 from "../../assets/martin-garrido-cVUPic1cbd4-unsplash.jpg";
 import image3 from "../../assets/rebekah-yip-wMT0oiL5XjA-unsplash.jpg";
 import { useEffect, useState } from "react";
+import { ToastContainer } from 'react-toastify';
+import { notify, notifyErr } from "../../utils/toastify";
 
 function Home() {
+  
   const navigate = useNavigate();
+
   const slides = [
     {
       url: image1,
@@ -43,6 +47,7 @@ function Home() {
       category: "mouses",
     },
   ];
+
   const [productData, setProductData] = useState([]);
 
   const fetchAllProducts = async () => {
@@ -53,7 +58,6 @@ function Home() {
           headers: getHeaders(),
         }
       );
-      console.log(response.data);
       setProductData(response.data);
     } catch (err) {
       console.log(err);
@@ -103,8 +107,6 @@ function Home() {
             headers: getHeaders(),
           }
         );
-
-        console.log(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -120,8 +122,6 @@ function Home() {
             headers: getHeaders(),
           }
         );
-
-        console.log(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -137,6 +137,23 @@ function Home() {
   const viewMoreButtonMonitors = () => {
     navigate("/user/monitors");
   };
+
+const handleAddToCartButton =async(productId)=>{
+
+  try {
+    const response =await axios.post(`http://localhost:3001/user/cart/${productId}`,{},{
+      headers:getHeaders()
+    })
+    // console.log(response.data)
+    if(response.status === 200){
+      notify()
+    }
+  } catch (error) {
+    console.log(error)
+    notifyErr()
+  }
+}
+
 
   return (
     <>
@@ -185,6 +202,7 @@ function Home() {
                 fontWeight: 600,
                 fontSize: "20px",
               }}
+              
             >
               Keyboards
             </Typography>
@@ -210,8 +228,9 @@ function Home() {
                 sx={{
                   width: 290,
                   borderRadius: 3,
+                  border:'1px solid #F3F8FF',
                   height: 430,
-                  boxShadow: "0px 10px 15px -3px rgba(0,0,0,0.1)",
+                  boxShadow: "1px 10px 15px -3px rgba(0,0,0,0.1)",
                   position: "relative",
                 }}
               >
@@ -223,7 +242,7 @@ function Home() {
                 />
                 <Link to={`/user/view-product/${product._id}`}>
                   <CardContent>
-                    <Typography className="typo" variant="h5">
+                    <Typography fontFamily={'poppins'} variant="h5" sx={{color:"#607274"}}>
                       {product.title}
                     </Typography>
                     <Typography className="typo" pt={2} variant="body2">
@@ -240,18 +259,30 @@ function Home() {
                 >
                   <IconButton
                     aria-label="add to favorites"
+                    
                     onClick={() => {
                       toggleFavorite(product._id);
                     }}
                   >
                     {favorites.includes(product._id) ? (
-                      <FavoriteIcon />
+                      <FavoriteIcon sx={{color:"#C3ACD0"}} />
                     ) : (
-                      <FavoriteBorderIcon />
+                      <FavoriteBorderIcon sx={{color:"black"}} />
                     )}
                   </IconButton>
 
-                  <button className="add-to-cart-btn">Add to cart</button>
+                  <button className="add-to-cart-btn"  onClick={()=>handleAddToCartButton(product._id)}>Add to cart</button>
+                  <ToastContainer
+position="top-center"
+autoClose={3000}
+hideProgressBar={true}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+theme="light"
+/>
                 </CardActions>
               </Card>
             ))}
@@ -306,7 +337,7 @@ function Home() {
                 />
                 <Link to={`/user/view-product/${product._id}`}>
                   <CardContent>
-                    <Typography className="typo" variant="h5">
+                    <Typography fontFamily={'poppins'} variant="h5" sx={{color:"#607274"}}>
                       {product.title}
                     </Typography>
                     <Typography className="typo" pt={2} variant="body2">
@@ -328,14 +359,17 @@ function Home() {
                     }}
                   >
                     {favorites.includes(product._id) ? (
-                      <FavoriteIcon />
+                      <FavoriteIcon sx={{color:"#C3ACD0"}}/>
                     ) : (
-                      <FavoriteBorderIcon />
+                      <FavoriteBorderIcon sx={{color:"black"}}/>
                     )}
                   </IconButton>
-                  <button className="add-to-cart-btn">Add to cart</button>
+                  <button onClick={() => {
+                      handleAddToCartButton(product._id)
+                    }} className="add-to-cart-btn">Add to cart</button>
                 </CardActions>
               </Card>
+             
             ))}
           </Grid>
           <Grid
@@ -391,7 +425,7 @@ function Home() {
                 />
                 <Link to={`/user/view-product/${product._id}`}>
                   <CardContent>
-                    <Typography className="typo" variant="h5">
+                    <Typography fontFamily={'poppins'} variant="h5" sx={{color:"#607274"}}>
                       {product.title}
                     </Typography>
                     <Typography className="typo" pt={2} variant="body2">
@@ -413,12 +447,14 @@ function Home() {
                     }}
                   >
                     {favorites.includes(product._id) ? (
-                      <FavoriteIcon />
+                      <FavoriteIcon sx={{color:"#C3ACD0"}}/>
                     ) : (
-                      <FavoriteBorderIcon />
+                      <FavoriteBorderIcon sx={{color:"black"}}/>
                     )}
                   </IconButton>
-                  <button className="add-to-cart-btn">Add to cart</button>
+                  <button onClick={() => {
+                      handleAddToCartButton(product._id)
+                    }} className="add-to-cart-btn">Add to cart</button>
                 </CardActions>
               </Card>
             ))}

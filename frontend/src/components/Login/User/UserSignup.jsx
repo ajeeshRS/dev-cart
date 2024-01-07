@@ -4,6 +4,8 @@ import { Button, Grid, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import { ToastContainer } from 'react-toastify';
+import { notify, notifyAccount, notifyBadRequest, notifyPasswordErr, notifyUserExists } from "../../../utils/toastify";
 
 function UserSignup() {
   const [userFormData, setuserFormData] = useState({
@@ -22,19 +24,34 @@ function UserSignup() {
 
   const submitUserData = async (e) => {
     e.preventDefault();
-    const isMatch = userFormData.password === userFormData.confirmPassword;
+  
+    try {
+      const isMatch = userFormData.password === userFormData.confirmPassword;
+  
+      if (isMatch) {
+        const response = await axios.post("http://localhost:3001/user/signup", { userFormData });
+        
+        if(response.status === 200){
+          notifyAccount()
+        }
+        setuserFormData(nullData);
 
-    isMatch
-      ? await axios
-          .post("http://localhost:3001/user/signup", { userFormData })
-          .then((response) => {
-            alert(response.data);
-          })
-          .catch((err) => console.error(err))
-      : alert("passwords does not match");
+      } else {
+        notifyPasswordErr()
+      }
+    } catch (err) {
+      if(err.status===401){
+        notifyBadRequest()
+      }else{
+        notifyUserExists()
 
-    setuserFormData(nullData);
+      }
+
+      
+      
+    }
   };
+  
 
   const valueChange = (e) => {
     e.preventDefault();
@@ -118,6 +135,15 @@ function UserSignup() {
             >
               Signup
             </Button>
+            <ToastContainer position="top-center"
+autoClose={3000}
+hideProgressBar={true}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+theme="light"/>
           </Grid>
         </form>
         <Grid md={12} display={"flex"} justifyContent={"center"} mt={3}>
@@ -131,6 +157,7 @@ function UserSignup() {
               Login
             </Link>{" "}
           </Typography>
+          
         </Grid>
       </Grid>
     </Grid>

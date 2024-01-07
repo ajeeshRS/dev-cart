@@ -18,7 +18,7 @@ function EditProductPage() {
           }
         );
         setAdmin(response.data.admin);
-        console.log(response.data.message);
+        // console.log(response.data.message);
       } catch (err) {
         console.log(err);
       }

@@ -10,7 +10,7 @@ import { getHeaders } from "../../utils/auth";
 function ProductList() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-
+ 
   //   extracting category name from url
   const { category } = useParams();
 
@@ -38,6 +38,7 @@ function ProductList() {
     fetchKeyboards();
   }, []);
 
+  const [loading,setLoading]=useState(true)
   // filtering keyboard details from products array
   useEffect(() => {
     if (products.length > 0) {
@@ -45,10 +46,12 @@ function ProductList() {
         (product) => product.category === categoryName
       );
       setFilteredProducts(filtered);
+      setLoading(false)
     }
   }, [products]);
 
   const [favorites, setFavorites] = useState([]);
+ 
 
   const fetchFavorites = async () => {
     try {
@@ -81,7 +84,7 @@ function ProductList() {
           }
         );
 
-        console.log(response.data);
+        // console.log(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -97,8 +100,6 @@ function ProductList() {
             headers: getHeaders(),
           }
         );
-
-        console.log(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -107,7 +108,8 @@ function ProductList() {
 
   return (
     <div className="main-container">
-      {filteredProducts.map((product) => (
+      {
+      loading===false ? filteredProducts.map((product) => (
         <Grid
           md={12}
           sx={{ cursor: "pointer" }}
@@ -118,6 +120,7 @@ function ProductList() {
           flexDirection={"row"}
           justifyContent={"space-between"}
           width={"100%"}
+          bgcolor={"#fff"}
           p={5}
         >
           <Grid md={4} width={"400px"}>
@@ -125,6 +128,7 @@ function ProductList() {
               className="product-img"
               src={`http://localhost:3001/uploads/${product.image.filename}`}
               alt="product-image"
+              
             />
           </Grid>
           <Link to={`/user/view-product/${product._id}`}>
@@ -170,8 +174,21 @@ function ProductList() {
               )}
             </IconButton>
           </Grid>
-        </Grid>
-      ))}
+        </Grid> 
+      )):<Grid
+      md={12}
+      pt={10}
+      width={"100%"}
+      height={"90svh"}
+      display={"flex"}
+      justifyContent={"center"}
+      alignItems={"center"}
+    >
+      <Typography sx={{ color: "grey", fontFamily: "montserrat" }}>
+Loading...
+      </Typography>
+    </Grid>
+    }
     </div>
   );
 }
