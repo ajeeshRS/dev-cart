@@ -23,6 +23,7 @@ function App() {
       <SearchProvider>
         <Routes>
           <Route path="/admin/login" element={<AdminLoginPage />} />
+          <Route path="/admin/add-coupon" element />
           <Route path="/user/login" element={<UserLoginPage />} />
           <Route path="/user/signup" element={<UserLoginPage />} />
           <Route path="/admin/add-product" element={<AddProductPage />} />
@@ -34,11 +35,11 @@ function App() {
           <Route path="user/wishlist" element={<WishList />} />
           <Route path="user/cart" element={<UserCartPage />} />
           <Route path="user/search" element={<UserHome />} />
-          <Route path="user/cart/checkout/address" element={<ChooseAddress />}/>
-          <Route path="user/cart/checkout/order-summary" element={<OrderSummaryPage />}/>
           <Route path="user/address/add-address" element={<AddAddressPage />} />
           <Route path="user/address/saved-addresses" element={<ViewAddresses />}/>
           <Route path="user/address/update-address/:id" element={<EditAddressPage />}/>
+          <Route path="user/cart/checkout/address" element={<ChooseAddress />}/>
+          <Route path="user/cart/checkout/order-summary" element={<OrderSummaryPage />}/>
 
         </Routes>
       </SearchProvider>

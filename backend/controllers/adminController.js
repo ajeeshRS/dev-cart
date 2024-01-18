@@ -5,6 +5,7 @@ const admin = require("../models/adminModel");
 const product = require("../models/productModel");
 const { response } = require("express");
 const fs = require("fs");
+const coupon = require("../models/couponModel");
 
 // getting admin
 const authAdmin = asyncHandler(async (req, res) => {
@@ -154,7 +155,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
     fs.unlinkSync(productPath);
     //console.log("file successfully removed");
   } else {
-   //console.log("file does not exist!");
+    //console.log("file does not exist!");
   }
   try {
     await productExist.deleteOne();
@@ -164,6 +165,8 @@ const deleteProduct = asyncHandler(async (req, res) => {
   }
 });
 
+const couponDiscount = asyncHandler(async (req, res) => {});
+
 module.exports = {
   authAdmin,
   login,
@@ -172,4 +175,5 @@ module.exports = {
   allProducts,
   updateProduct,
   deleteProduct,
+  couponDiscount,
 };

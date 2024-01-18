@@ -1,17 +1,151 @@
-import { AppBar, Box, Grid, IconButton, Toolbar, Typography } from "@mui/material";
-import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import {
+  AppBar,
+  Box,
+  Button,
+  Divider,
+  Grid,
+  IconButton,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Remove from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
+import { getHeaders } from "../../utils/auth";
+import axios from "axios";
 
 function OrderSummaryPage() {
   const location = useLocation();
   const addressId = location.state.id;
-  const navigate = useNavigate()
-  
+  const navigate = useNavigate();
+  const [address, setAddress] = useState({});
+  const [cartProducts, setCartProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { fullName, phoneNo, street, city, state, pinCode } = address;
+
+  const addressString = `${fullName},${phoneNo},${street},${city},${state},${pinCode}`;
+
+  const fetchAddress = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:3001/user/address/${addressId}`,
+        {
+          headers: getHeaders(),
+        }
+      );
+      setAddress(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const fetchCartProducts = async () => {
+    try {
+      const response = await axios.get("http://localhost:3001/user/cart", {
+        headers: getHeaders(),
+      });
+      setCartProducts(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateQuantity = async (itemId, quantity) => {
+    try {
+      if (quantity > 0) {
+        const response = await axios.put(
+          `http://localhost:3001/user/cart/update/quantity/${itemId}`,
+          {
+            quantity: quantity,
+          },
+          {
+            headers: getHeaders(),
+          }
+        );
+        if (response.data.success) {
+          setCartProducts((prevCart) =>
+            prevCart.map((item) =>
+              item._id === itemId ? { ...item, quantity: quantity } : item
+            )
+          );
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const removeFromCart = async (itemId) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3001/user/cart/delete/${itemId}`,
+        {
+          headers: getHeaders(),
+        }
+      );
+      setCartProducts((prevCart) =>
+        prevCart.filter((item) => item._id !== itemId)
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const totalAmount = cartProducts.reduce(
+    (accumulator, product) => accumulator + product.price * product.quantity,
+    0
+  );
+
+  const [couponValue, setCouponValue] = useState("");
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    setCouponValue(e.target.value);
+  };
+
+  const [discountAmount, setDiscountAmount] = useState(null);
+  const [totalAmountToBePaid, setTotalAmountToBePaid] = useState(null);
+
+  const handleApplyBtn = async () => {
+    try {
+      const res = await axios.post(
+        "http://localhost:3001/user/check-coupon",
+        { couponValue, totalAmount },
+        {
+          headers: getHeaders(),
+        }
+      );
+
+      if (res.data.valid === true) {
+        const discountPercentage = res.data.discountPercentage;
+        const calculatedDiscountAmount = Math.round(
+          (discountPercentage / 100) * totalAmount
+        );
+        const updatedTotalAmountToBePaid =
+          totalAmount - calculatedDiscountAmount;
+        setDiscountAmount(calculatedDiscountAmount);
+        setTotalAmountToBePaid(updatedTotalAmountToBePaid);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // fetch address
+  useEffect(() => {
+    fetchAddress();
+  }, []);
+
+  // fetch cart products
+  useEffect(() => {
+    fetchCartProducts();
+  }, [cartProducts]);
 
   return (
     <>
-       <Grid md={12}>
+      <Grid md={12}>
         <Box sx={{ flexGrow: 1 }}>
           <AppBar
             elevation={1}
@@ -39,6 +173,251 @@ function OrderSummaryPage() {
             </Toolbar>
           </AppBar>
         </Box>
+      </Grid>
+      <Grid md={12} mt={12} pb={2} width={"100%"} display={"flex"}>
+        <Typography fontFamily={"poppins"} fontWeight={600} pl={8} pr={1}>
+          Deliver to :{" "}
+        </Typography>
+        <Typography>
+          {" "}
+          {address ? addressString : "no address selected"}
+        </Typography>
+      </Grid>
+      <Grid md={12}>
+        {loading ? (
+          <Grid
+            width={"100%"}
+            height={"60svh"}
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
+            <Typography fontFamily={"poppins"} color={"grey"}>
+              Loading...
+            </Typography>
+          </Grid>
+        ) : (
+          cartProducts.map((product) => (
+            <Grid
+              md={12}
+              sx={{ cursor: "pointer" }}
+              padding={6}
+              pt={10}
+              border={"1px solid #F8FAE5"}
+              display={"flex"}
+              flexDirection={"row"}
+              justifyContent={"space-between"}
+              width={"100%"}
+              position={"relative"}
+              p={5}
+              key={product._id}
+            >
+              <Grid md={4} width={"400px"}>
+                <img
+                  className="product-img"
+                  src={`http://localhost:3001/uploads/${product.image.filename}`}
+                  alt="product-image"
+                />
+              </Grid>
+              <Link to={`/user/view-product/${product._id}`}>
+                <Grid
+                  md={4}
+                  position={"absolute"}
+                  left={300}
+                  display={"flex"}
+                  height={"150px"}
+                  flexDirection={"column"}
+                  justifyContent={"space-between"}
+                  sx={{ textDecoration: "none" }}
+                  color={"black"}
+                >
+                  <Typography
+                    fontFamily={"poppins"}
+                    color={"#607274"}
+                    fontWeight={500}
+                  >
+                    {product.title}
+                  </Typography>
+                  <Typography fontFamily={"poppins"} fontWeight={500}>
+                    {product.brand}
+                  </Typography>
+                  <Typography fontFamily={"poppins"} fontWeight={500}>
+                    {product.description}
+                  </Typography>
+                </Grid>
+              </Link>
+              <Grid
+                md={4}
+                display={"flex"}
+                height={"150px"}
+                alignItems={"center"}
+              >
+                <Grid
+                  mr={10}
+                  display={"flex"}
+                  flexDirection={"row"}
+                  alignItems={"center"}
+                  position={"absolute"}
+                  right={"250px"}
+                >
+                  <IconButton
+                    onClick={() =>
+                      updateQuantity(product._id, product.quantity - 1)
+                    }
+                  >
+                    <Remove />
+                  </IconButton>
+                  <Typography>{product.quantity}</Typography>
+                  <IconButton
+                    onClick={() =>
+                      updateQuantity(product._id, product.quantity + 1)
+                    }
+                  >
+                    <AddIcon />
+                  </IconButton>
+                </Grid>
+                <button
+                  style={{
+                    marginRight: "20px",
+                    position: "relative",
+                    right: "10px",
+                  }}
+                  className="custom-btn"
+                  onClick={() => removeFromCart(product._id)}
+                >
+                  Remove
+                </button>
+                <Typography fontFamily={"montserrat"} fontWeight={600}>
+                  ₹{product.price * product.quantity}
+                </Typography>
+              </Grid>
+            </Grid>
+          ))
+        )}
+      </Grid>
+      <Grid
+        md={12}
+        width={"100%"}
+        height={"100px"}
+        display={"flex"}
+        pr={14}
+        justifyContent={"flex-end"}
+        alignItems={"center"}
+        pt={5}
+        mb={5}
+      >
+        <Typography
+          sx={{ paddingRight: "10px", fontFamily: "poppins", color: "grey" }}
+        >
+          Have a discount coupon ?
+        </Typography>
+        <input
+          style={{
+            width: "200px",
+            borderRadius: "3px",
+            border: "1px solid grey",
+            height: "35px",
+            marginRight: "10px",
+            paddingLeft: "5px",
+          }}
+          onChange={handleChange}
+          value={couponValue}
+          placeholder="coupon code"
+        />
+        <button className="custom-btn" onClick={handleApplyBtn}>
+          Apply
+        </button>
+      </Grid>
+      <Divider />
+      <Grid pt={5} pl={15} pr={15} pb={10}>
+        <Typography sx={{ fontFamily: "poppins", fontWeight: "600" }}>
+          Price details
+        </Typography>
+        {discountAmount ? (
+          <>
+            <Grid
+              width={"100%"}
+              display={"flex"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              pt={3}
+            >
+              <Typography sx={{ fontFamily: "poppins" }}>
+                Price ({cartProducts.length} items)
+              </Typography>
+              <Typography sx={{ fontFamily: "poppins" }}>
+                ₹{totalAmount}
+              </Typography>
+            </Grid>
+
+            <Grid
+              width={"100%"}
+              display={"flex"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              pt={1}
+            >
+              <Typography sx={{ fontFamily: "poppins" }}>Discount</Typography>
+              <Typography sx={{ fontFamily: "poppins", color: "green" }}>
+                -₹{discountAmount}
+              </Typography>
+            </Grid>
+            <Grid
+              width={"100%"}
+              display={"flex"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              pt={1}
+            >
+              <Typography sx={{ fontFamily: "poppins", fontWeight: "600" }}>
+                Total amount
+              </Typography>
+              <Typography sx={{ fontFamily: "poppins", fontWeight: "600" }}>
+                ₹{totalAmountToBePaid}
+              </Typography>
+            </Grid>
+          </>
+        ) : (
+          <>
+            <Grid
+              width={"100%"}
+              display={"flex"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              pt={3}
+            >
+              <Typography sx={{ fontFamily: "poppins" }}>
+                Price ({cartProducts.length} items)
+              </Typography>
+              <Typography sx={{ fontFamily: "poppins" }}>
+                ₹{totalAmount}
+              </Typography>
+            </Grid>
+            <Grid
+              width={"100%"}
+              display={"flex"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              pt={1}
+            >
+              <Typography sx={{ fontFamily: "poppins", fontWeight: "600" }}>
+                Total Amount
+              </Typography>
+              <Typography sx={{ fontFamily: "poppins", fontWeight: "600" }}>
+                ₹{totalAmount}
+              </Typography>
+            </Grid>
+          </>
+        )}
+        <Grid
+          width={"100%"}
+          display={"flex"}
+          justifyContent={"flex-end"}
+          alignItems={"center"}
+          pt={3}
+        >
+          <button className="custom-btn">Proceed</button>
+        </Grid>
       </Grid>
     </>
   );

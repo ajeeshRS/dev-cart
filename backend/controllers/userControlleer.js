@@ -6,6 +6,7 @@ const product = require("../models/productModel");
 const wishList = require("../models/userWishlistModel");
 const userCart = require("../models/userCartModel");
 const address = require("../models/addressModel");
+const coupon = require("../models/couponModel");
 
 // register user
 const registerUser = asyncHandler(async (req, res) => {
@@ -386,6 +387,60 @@ const deleteAddress = asyncHandler(async (req, res) => {
   }
 });
 
+const getAddress = asyncHandler(async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = await address.findById(id);
+    if (data) {
+      console.log(data);
+      res.status(200).json(data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+const checkCoupon = asyncHandler(async (req, res) => {
+  try {
+    const { couponValue, totalAmount } = req.body;
+    const couponDetail = await coupon.findOne({
+      code: couponValue,
+      used: false,
+    });
+
+    if (!couponDetail) {
+      return res
+        .status(404)
+        .json({
+          valid: false,
+          message: "Coupon not found or already been used.",
+        });
+    }
+    if (couponDetail.expiry && couponDetail.expiry < new Date()) {
+      return res.json({ valid: false, message: "Coupon has expired" });
+    }
+    if (
+      couponDetail.minPurchaseAmount &&
+      totalAmount < coupon.minPurchaseAmount
+    ) {
+      return res.json({
+        valid: false,
+        message: "Minimum purchase amount not met",
+      });
+    }
+
+    return res.json({
+      valid: true,
+      discountPercentage: couponDetail.discountPercentage,
+    });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ valid: false, message: "Error checking coupon validity" });
+  }
+});
+
 module.exports = {
   registerUser,
   loginUser,
@@ -404,4 +459,6 @@ module.exports = {
   viewAddresses,
   updateAddress,
   deleteAddress,
+  getAddress,
+  checkCoupon,
 };

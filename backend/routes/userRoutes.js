@@ -17,6 +17,8 @@ const {
   viewAddresses,
   updateAddress,
   deleteAddress,
+  getAddress,
+  checkCoupon,
 } = require("../controllers/userControlleer");
 const validateToken = require("../middlewares/validateTokenhandler");
 const router = express.Router();
@@ -38,4 +40,6 @@ router.post("/add-address", validateToken, addAddress);
 router.get("/view-addresses", validateToken, viewAddresses);
 router.put("/update-address/:id", validateToken, updateAddress);
 router.delete("/delete-address/:id", validateToken, deleteAddress);
+router.get("/address/:id",validateToken,getAddress)
+router.post("/check-coupon",validateToken,checkCoupon)
 module.exports = router;

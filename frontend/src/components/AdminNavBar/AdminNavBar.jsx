@@ -16,11 +16,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 
 import {
-  AccountCircle,
-  SearchOutlined,
-  Logout,
-  PersonAdd,
-  Settings,
+  Logout
 } from "@mui/icons-material";
 import DrawerComponent from "./DrawerComponent";
 import { useState } from "react";
@@ -45,11 +41,10 @@ function AdminNavBar({ admin }) {
   return (
     <AppBar
       position="fixed"
-      elevation={0}
       className="app-bar"
       sx={{
         height: "10svh",
-        backgroundColor: "#f8f0fb",
+        backgroundColor: "#fff",
         boxShadow: "0px 1px 5px 0px rgb(194, 194, 194)",
       }}
     >
@@ -120,6 +115,18 @@ function AdminNavBar({ admin }) {
                   }}
                 >
                   Dashboard
+                </Typography>
+                <Typography
+                  sx={{
+                    cursor: "pointer",
+                    fontFamily: "montserrat",
+                    fontWeight: "600",
+                  }}
+                >
+                  <Link to={"/admin/add-coupon"} style={{ textDecoration: "none", color: "#262626" }}>
+                  Add coupon
+                  </Link>
+
                 </Typography>
                 <Typography
                   sx={{
