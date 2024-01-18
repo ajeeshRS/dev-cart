@@ -12,12 +12,12 @@ const validateToken = asyncHandler(async (req, res, next) => {
   if (authHeader && authHeader.startsWith("Bearer")) {
     token = authHeader.split(" ")[1];
     if (!token) { 
-      res.status(401);
+      res.status(401).json("user is not authorised or token is missing")
       throw new Error("user is not authorized or token is missing");
     }
     jwt.verify(token, process.env.ACCESS_KEY, (err, decoded) => {
       if (err) {
-        res.status(401);
+        res.status(401).json("user is not authorised");
         throw new Error("user is not authorised");
       }
       // console.log(decoded);

@@ -7,6 +7,7 @@ import {
   CardActions,
   IconButton,
   Button,
+  Hidden,
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -169,7 +170,7 @@ function Home() {
                     backgroundImage: `url(${slide.url})`,
                     backgroundSize: "cover",
                     width: "100%",
-                    height: "550px",
+                    height: "400px",
                     display: "flex",
                     justifyContent: "flex-start",
                     alignItems: "center",
@@ -226,7 +227,7 @@ function Home() {
               <Card
                 key={index}
                 sx={{
-                  width: 290,
+                  width: 270,
                   borderRadius: 3,
                   border: "1px solid #F3F8FF",
                   height: 430,
@@ -249,10 +250,10 @@ function Home() {
                     >
                       {product.title}
                     </Typography>
-                    <Typography className="typo" pt={2} variant="body2">
+                    <Typography fontFamily={"montserrat"} fontWeight={500} className="typo" pt={2} variant="body2" fontSize={13}>
                       {product.description}
                     </Typography>
-                    <Typography className="typo" fontWeight={600} pt={2} pb={1}>
+                    <Typography sx={{ position: "absolute", bottom: "50px" }} className="typo" fontWeight={600} pt={2} pb={1}>
                       ₹{product.price}
                     </Typography>
                   </CardContent>
@@ -330,7 +331,7 @@ function Home() {
               <Card
                 key={index}
                 sx={{
-                  width: 290,
+                  width: 270,
                   borderRadius: 3,
                   height: 430,
                   boxShadow: "0px 10px 15px -3px rgba(0,0,0,0.1)",
@@ -352,10 +353,10 @@ function Home() {
                     >
                       {product.title}
                     </Typography>
-                    <Typography className="typo" pt={2} variant="body2">
+                    <Typography className="typo" pt={2} variant="body2" fontFamily={"montserrat"} fontWeight={500} fontSize={13}>
                       {product.description}
                     </Typography>
-                    <Typography className="typo" fontWeight={600} pt={2} pb={1}>
+                    <Typography sx={{ position: "absolute", bottom: "50px" }} className="typo" fontWeight={600} pt={2} pb={1}>
                       ₹{product.price}
                     </Typography>
                   </CardContent>
@@ -426,7 +427,7 @@ function Home() {
               <Card
                 key={index}
                 sx={{
-                  width: 290,
+                  width: 270,
                   borderRadius: 3,
                   height: 430,
                   boxShadow: "0px 10px 15px -3px rgba(0,0,0,0.1)",
@@ -443,15 +444,15 @@ function Home() {
                   <CardContent>
                     <Typography
                       fontFamily={"poppins"}
-                      variant="h5"
+                      variant="h6"
                       sx={{ color: "#607274" }}
                     >
                       {product.title}
                     </Typography>
-                    <Typography className="typo" pt={2} variant="body2">
+                    <Typography className="typo" pt={2} variant="body2" fontFamily={"montserrat"} fontWeight={500} fontSize={13}>
                       {product.description}
                     </Typography>
-                    <Typography className="typo" fontWeight={600} pt={2} pb={1}>
+                    <Typography sx={{ position: "absolute", bottom: "50px" }} className="typo" fontWeight={600} pt={2} pb={1}>
                       ₹{product.price}
                     </Typography>
                   </CardContent>

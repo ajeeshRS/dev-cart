@@ -248,7 +248,9 @@ function UserCartPage() {
             fontFamily={"montserrat"}
             fontWeight={600}
           >{`Cart subtotal : ₹${totalAmount.toFixed(2)}`}</Typography>
-          <button className="custom-btn">checkout</button>
+          <Link to={"/user/cart/checkout/address"}>
+            <button className="custom-btn">checkout</button>
+          </Link>
         </Grid>
       ) : (
         cartProducts.length === 0 &&

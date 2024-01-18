@@ -12,6 +12,11 @@ const {
   getCartProducts,
   deleteFromCart,
   updateQuantity,
+  searchProducts,
+  addAddress,
+  viewAddresses,
+  updateAddress,
+  deleteAddress,
 } = require("../controllers/userControlleer");
 const validateToken = require("../middlewares/validateTokenhandler");
 const router = express.Router();
@@ -24,8 +29,13 @@ router.post("/wishlist/:productId", validateToken, addToWishlist);
 router.delete("/wishlist/delete/:productId", validateToken, deleteFromWishlist);
 router.get("/wishlist/all-products", validateToken, getAllFavorites);
 router.get("/wishlist", validateToken, getFavoriteProductDetails);
-router.post("/cart/:productId",validateToken,addToCart)
-router.get("/cart",validateToken,getCartProducts)
-router.delete("/cart/delete/:productId",validateToken,deleteFromCart)
-router.put("/cart/update/quantity/:productId",validateToken,updateQuantity)
+router.post("/cart/:productId", validateToken, addToCart);
+router.get("/cart", validateToken, getCartProducts);
+router.delete("/cart/delete/:productId", validateToken, deleteFromCart);
+router.put("/cart/update/quantity/:productId", validateToken, updateQuantity);
+router.get("/search/:term", validateToken, searchProducts);
+router.post("/add-address", validateToken, addAddress);
+router.get("/view-addresses", validateToken, viewAddresses);
+router.put("/update-address/:id", validateToken, updateAddress);
+router.delete("/delete-address/:id", validateToken, deleteAddress);
 module.exports = router;

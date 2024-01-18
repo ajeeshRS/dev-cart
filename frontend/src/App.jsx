@@ -10,23 +10,38 @@ import ProductPageOnCategory from "./pages/user/ProductPageOnCategory";
 import ViewProduct from "./pages/user/ViewProduct";
 import WishList from "./pages/user/WishList";
 import UserCartPage from "./pages/user/userCartPage";
+import { SearchProvider } from "./context/SearchContext";
+import ChooseAddress from "./pages/user/ChooseAddress";
+import AddAddressPage from "./pages/user/AddAddressPage";
+import ViewAddresses from "./pages/user/ViewAddresses";
+import EditAddressPage from "./pages/user/EditAddressPage";
+import OrderSummaryPage from "./pages/user/OrderSummaryPage";
 
 function App() {
   return (
     <>
-      <Routes>
-        <Route path="/admin/login" element={<AdminLoginPage />} />
-        <Route path="/user/login" element={<UserLoginPage />} />
-        <Route path="/user/signup" element={<UserLoginPage />} />
-        <Route path="/admin/add-product" element={<AddProductPage />} />
-        <Route path="/admin/all-products" element={<AllProductsPage />} />
-        <Route path="/admin/Edit-product/:id" element={<EditProductPage />} />
-        <Route path="user/home" element={<UserHome />} />
-        <Route path="user/:category" element={<ProductPageOnCategory />} />
-        <Route path="user/view-product/:id" element={<ViewProduct />} />
-        <Route path="user/wishlist" element={<WishList />} />
-        <Route path="user/cart" element={<UserCartPage />} />
-      </Routes>
+      <SearchProvider>
+        <Routes>
+          <Route path="/admin/login" element={<AdminLoginPage />} />
+          <Route path="/user/login" element={<UserLoginPage />} />
+          <Route path="/user/signup" element={<UserLoginPage />} />
+          <Route path="/admin/add-product" element={<AddProductPage />} />
+          <Route path="/admin/all-products" element={<AllProductsPage />} />
+          <Route path="/admin/Edit-product/:id" element={<EditProductPage />} />
+          <Route path="user/home" element={<UserHome />} />
+          <Route path="user/:category" element={<ProductPageOnCategory />} />
+          <Route path="user/view-product/:id" element={<ViewProduct />} />
+          <Route path="user/wishlist" element={<WishList />} />
+          <Route path="user/cart" element={<UserCartPage />} />
+          <Route path="user/search" element={<UserHome />} />
+          <Route path="user/cart/checkout/address" element={<ChooseAddress />}/>
+          <Route path="user/cart/checkout/order-summary" element={<OrderSummaryPage />}/>
+          <Route path="user/address/add-address" element={<AddAddressPage />} />
+          <Route path="user/address/saved-addresses" element={<ViewAddresses />}/>
+          <Route path="user/address/update-address/:id" element={<EditAddressPage />}/>
+
+        </Routes>
+      </SearchProvider>
     </>
   );
 }

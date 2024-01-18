@@ -12,34 +12,55 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { AccountCircle, Favorite, FavoriteBorder, FavoriteOutlined, Home, HomeMaxOutlined, HomeOutlined, Logout, Person, SearchOutlined, ShoppingCart } from "@mui/icons-material";
+import { AccountCircle, Favorite, FavoriteBorder, FavoriteBorderOutlined, FavoriteOutlined, Home, HomeMaxOutlined, HomeOutlined, Logout, Person, PersonOffOutlined, PersonOutline, SearchOutlined, ShoppingCart, ShoppingCartOutlined } from "@mui/icons-material";
 import DrawerComponent from "./DrawerComponent";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import { getHeaders } from "../../utils/auth";
-function NavBar() {
+import { useSearchContext } from "../../context/SearchContext";
+
+function NavBar({ setSearchResults }) {
+
   const navigate = useNavigate()
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
-  const [searchQuery,setSearchQuery]= useState('')
+
+  const [searchTerm,setSearchTerm] = useState('')
   const location = useLocation()
   const [cartItems,setCartItems]= useState([])
+  const { updateSearchResults } = useSearchContext();
+
+  
   const handleOnChange =(e)=>{
-      setSearchQuery(e.target.value);
+      e.preventDefault()
+      setSearchTerm(e.target.value);
   }
 
+  // to perform search query
   const searchButton=async()=>{
-    // const res = await axios.get("http://localhost:3001/user/search")
 
-    setSearchQuery('')
+    try {
+      
+      const res = await axios.get(`http://localhost:3001/user/search/${searchTerm}`,{
+        headers:getHeaders()
+      })
+      if(res.status===200){
+        updateSearchResults(res.data)
+        setSearchTerm('')
+        navigate("/user/search")
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
 
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -62,6 +83,13 @@ function NavBar() {
       console.log(error)
     }
   }
+
+  const handleKeyPress=(e)=>{
+    if(e.key==="Enter"){
+      searchButton()
+    }
+    }
+
 useEffect(()=>{
 getCartItems()
 },[cartItems])
@@ -73,7 +101,7 @@ getCartItems()
       className="app-bar"
       sx={{
         height: "10svh",
-        backgroundColor: "#fff",
+        backgroundColor: "#ffff",
         
       }}
     >
@@ -89,9 +117,9 @@ getCartItems()
           md={4}
           sx={{
             marginLeft: {
-              xs: "10px",
-              md: "20px",
-              sm: "10px",
+              xs: "40px",
+              md: "90px",
+              sm: "50px",
             },
           }}
           pl={"auto"}
@@ -105,16 +133,16 @@ getCartItems()
                 xs: "25px",
               },
               fontWeight: "800",
-              fontFamily: "montserrat",
+              fontFamily: "Pacifico",
               cursor: "pointer",
             }}
           >
-            Dev Cart<span className="span-el" style={{color:'#'}}>.</span>
+            DevCart <span className="span-el" style={{color:'#7E30E1'}}>.</span>
           </Typography>
         </Grid>
-        <Grid md={4}>
-          <input onChange={handleOnChange} type="text" value={searchQuery} className="search-input" placeholder="Search product" />
-          <IconButton  onClick={searchButton} sx={{color:'#7E30E1'}} size="medium">
+        <Grid md={4} width={"500px"}>
+          <input style={{width:"400px",height:"40px"}} onChange={handleOnChange} onKeyDown={handleKeyPress} type="text" value={searchTerm} className="search-input" placeholder="Search products" />
+          <IconButton  onClick={searchButton} sx={{color:'#7E30E1'}} size="large">
             <SearchOutlined />
           </IconButton>
         </Grid>
@@ -130,7 +158,7 @@ getCartItems()
           sx={{
             marginRight: {
               xs: "10px",
-              md: "20px",
+              md: "70px",
               sm: "10px",
             },
           }}
@@ -140,19 +168,22 @@ getCartItems()
           ) : (
             <>
             
-              <Link to={"/user/wishlist"}>
-              <IconButton sx={{color:'black'}}>
-                <Favorite/>
-              </IconButton>
+              <Link to={"/user/wishlist"} className="link-tag">
+              <Badge badgeContent={""}>
+                <FavoriteBorderOutlined sx={{color:"black"}}/>
+                <Typography className="typo" fontFamily={"poppins"} pl={1}>Wishlist</Typography>
+                </Badge>
               </Link>
               <Link to={"/user/cart"}>
               <Badge badgeContent={cartItems.length} color="primary">
-                <ShoppingCart sx={{color:"black"}} />
+                <ShoppingCartOutlined sx={{color:"black"}} />
+                <Typography className="typo" fontFamily={"poppins"} pl={1}>Cart</Typography>
+
               </Badge>
               
               </Link>
               <IconButton sx={{ color: "#262626" }} onClick={handleClick}>
-                <Person/>
+                <PersonOutline/>
               </IconButton>
               <Menu
                   anchorEl={anchorEl}

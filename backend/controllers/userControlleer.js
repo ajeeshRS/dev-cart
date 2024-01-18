@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const product = require("../models/productModel");
 const wishList = require("../models/userWishlistModel");
 const userCart = require("../models/userCartModel");
+const address = require("../models/addressModel");
 
 // register user
 const registerUser = asyncHandler(async (req, res) => {
@@ -252,10 +253,13 @@ const deleteFromCart = asyncHandler(async (req, res) => {
     if (index !== -1) {
       cart.products.splice(index, 1);
       await cart.save();
-      // console.log("Product removed successfully");
+      const data = await product.findByIdAndUpdate(
+        { _id: productId },
+        { quantity: 1 },
+        { new: true }
+      );
       res.status(200).json("Product removed successfully");
     } else {
-      // console.log("Product not found in cart");
       res.status(404).json("Product not found in cart");
     }
   } catch (error) {
@@ -290,6 +294,98 @@ const updateQuantity = asyncHandler(async (req, res) => {
   }
 });
 
+const searchProducts = asyncHandler(async (req, res) => {
+  try {
+    const term = req.params.term;
+    const products = await product.find({ $text: { $search: term } });
+    res.status(200).json(products);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+const addAddress = asyncHandler(async (req, res) => {
+  try {
+    const { data } = req.body;
+    const { fullName, phone, street, city, state, pincode } = data;
+    const result = await address.create({
+      user: req.user.id,
+      fullName: fullName,
+      phoneNo: phone,
+      street: street,
+      city: city,
+      state: state,
+      pinCode: pincode,
+    });
+    if (result) {
+      res.status(201).json("Address saved succesfully");
+    }
+  } catch (error) {
+    res.status(500);
+    console.log(error);
+  }
+});
+
+const viewAddresses = asyncHandler(async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const data = await address.find({ user: userId });
+    res.status(200).json(data);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+const updateAddress = asyncHandler(async (req, res) => {
+  const { data } = req.body;
+  const id = req.params.id;
+  const { fullName, phone, street, city, state, pincode } = data;
+  const updatedFields = {};
+
+  if (fullName) {
+    updatedFields.fullName = fullName;
+  }
+  if (phone) {
+    updatedFields.phone = phone;
+  }
+  if (street) {
+    updatedFields.street = street;
+  }
+  if (city) {
+    updatedFields.city = city;
+  }
+  if (state) {
+    updatedFields.state = state;
+  }
+  if (pincode) {
+    updatedFields.pinCode = pincode;
+  }
+
+  try {
+    const result = await address.findByIdAndUpdate(id, updatedFields, {
+      new: true,
+    });
+    if (!result) {
+      res.status(404).json("error finding item or unable to update.");
+    }
+    res.status(201).json("product updated succesfully!");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+const deleteAddress = asyncHandler(async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await address.deleteOne({ _id: id });
+    if (result) {
+      res.status(200).json(result);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = {
   registerUser,
   loginUser,
@@ -303,4 +399,9 @@ module.exports = {
   getCartProducts,
   deleteFromCart,
   updateQuantity,
+  searchProducts,
+  addAddress,
+  viewAddresses,
+  updateAddress,
+  deleteAddress,
 };
