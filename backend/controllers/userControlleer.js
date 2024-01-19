@@ -7,7 +7,8 @@ const wishList = require("../models/userWishlistModel");
 const userCart = require("../models/userCartModel");
 const address = require("../models/addressModel");
 const coupon = require("../models/couponModel");
-
+const Razorpay = require("razorpay");
+const crypto = require("crypto");
 // register user
 const registerUser = asyncHandler(async (req, res) => {
   const { userFormData } = req.body;
@@ -392,7 +393,7 @@ const getAddress = asyncHandler(async (req, res) => {
     const id = req.params.id;
     const data = await address.findById(id);
     if (data) {
-      console.log(data);
+      // console.log(data);
       res.status(200).json(data);
     }
   } catch (error) {
@@ -409,12 +410,10 @@ const checkCoupon = asyncHandler(async (req, res) => {
     });
 
     if (!couponDetail) {
-      return res
-        .status(404)
-        .json({
-          valid: false,
-          message: "Coupon not found or already been used.",
-        });
+      return res.status(404).json({
+        valid: false,
+        message: "Coupon not found or already been used.",
+      });
     }
     if (couponDetail.expiry && couponDetail.expiry < new Date()) {
       return res.json({ valid: false, message: "Coupon has expired" });
@@ -441,6 +440,53 @@ const checkCoupon = asyncHandler(async (req, res) => {
   }
 });
 
+const payment = asyncHandler(async (req, res) => {
+  try {
+    const instance = new Razorpay({
+      key_id: process.env.KEY_ID,
+      key_secret: process.env.KEY_SECRET,
+    });
+
+    const options = {
+      amount: req.body.amount * 100,
+      currency: "INR",
+      receipt: crypto.randomBytes(10).toString("hex"),
+    };
+
+    instance.orders.create(options, (error, order) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).json({ message: "something went wrong" });
+      }
+      res.status(200).json({ data: order });
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "internal server error" });
+  }
+});
+
+const verifyPayment = asyncHandler(async (req, res) => {
+  try {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+      req.body;
+    console.log(razorpay_order_id);
+    const sign = razorpay_order_id + "" + razorpay_payment_id;
+    const expectedSign = crypto
+      .createHmac("sha256", process.env.KEY_SECRET)
+      .update(sign.toString())
+      .digest("hex");
+
+    if (razorpay_signature === expectedSign) {
+      return res.status(200).json({ message: "Payment verified successfully" });
+    } else {
+      return res.status(400).json({ message: "Invalid signature sent!" });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "internal server error" });
+  }
+});
 module.exports = {
   registerUser,
   loginUser,
@@ -461,4 +507,6 @@ module.exports = {
   deleteAddress,
   getAddress,
   checkCoupon,
+  payment,
+  verifyPayment,
 };

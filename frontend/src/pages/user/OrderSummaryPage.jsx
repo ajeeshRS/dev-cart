@@ -15,16 +15,22 @@ import Remove from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import { getHeaders } from "../../utils/auth";
 import axios from "axios";
+import useRazorpay from "react-razorpay";
 
 function OrderSummaryPage() {
+  const [Razorpay] = useRazorpay();
   const location = useLocation();
   const addressId = location.state.id;
   const navigate = useNavigate();
+  // states
   const [address, setAddress] = useState({});
   const [cartProducts, setCartProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { fullName, phoneNo, street, city, state, pinCode } = address;
+  const [totalAmountToBePaid, setTotalAmountToBePaid] = useState(null);
+  const [discountAmount, setDiscountAmount] = useState(null);
+  const [couponValue, setCouponValue] = useState("");
 
+  const { fullName, phoneNo, street, city, state, pinCode } = address;
   const addressString = `${fullName},${phoneNo},${street},${city},${state},${pinCode}`;
 
   const fetchAddress = async () => {
@@ -98,15 +104,10 @@ function OrderSummaryPage() {
     0
   );
 
-  const [couponValue, setCouponValue] = useState("");
-
   const handleChange = (e) => {
     e.preventDefault();
     setCouponValue(e.target.value);
   };
-
-  const [discountAmount, setDiscountAmount] = useState(null);
-  const [totalAmountToBePaid, setTotalAmountToBePaid] = useState(null);
 
   const handleApplyBtn = async () => {
     try {
@@ -128,6 +129,54 @@ function OrderSummaryPage() {
         setDiscountAmount(calculatedDiscountAmount);
         setTotalAmountToBePaid(updatedTotalAmountToBePaid);
       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const initPayment = (data) => {
+    const options = {
+      key: "rzp_test_e8CL0GdOPfaY1s",
+      amount: data.amount,
+      currency: data.currency,
+      name: "order1",
+      image: null,
+      description: cartProducts.length,
+      order_id: data.id,
+      handler: async (response) => {
+        try {
+          const { data } = await axios.post(
+            "http://localhost:3001/user/checkout/verify-payment",
+            response,
+            {
+              headers: getHeaders(),
+            }
+          );
+          console.log(data);
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      theme: {
+        color: "#7E30E1",
+      },
+    };
+
+    const rzp1 = new Razorpay(options);
+    rzp1.open();
+  };
+
+  const handlePayment = async () => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:3001/user/checkout/payment",
+        { amount: discountAmount ? totalAmountToBePaid : totalAmount },
+        {
+          headers: getHeaders(),
+        }
+      );
+      console.log(data.data);
+      initPayment(data.data);
     } catch (error) {
       console.log(error);
     }
@@ -416,7 +465,9 @@ function OrderSummaryPage() {
           alignItems={"center"}
           pt={3}
         >
-          <button className="custom-btn">Proceed</button>
+          <button className="custom-btn" onClick={handlePayment}>
+            Proceed
+          </button>
         </Grid>
       </Grid>
     </>

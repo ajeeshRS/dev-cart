@@ -19,6 +19,8 @@ const {
   deleteAddress,
   getAddress,
   checkCoupon,
+  payment,
+  verifyPayment,
 } = require("../controllers/userControlleer");
 const validateToken = require("../middlewares/validateTokenhandler");
 const router = express.Router();
@@ -40,6 +42,10 @@ router.post("/add-address", validateToken, addAddress);
 router.get("/view-addresses", validateToken, viewAddresses);
 router.put("/update-address/:id", validateToken, updateAddress);
 router.delete("/delete-address/:id", validateToken, deleteAddress);
-router.get("/address/:id",validateToken,getAddress)
-router.post("/check-coupon",validateToken,checkCoupon)
+router.get("/address/:id", validateToken, getAddress);
+router.post("/check-coupon", validateToken, checkCoupon);
+// payment routes
+router.post("/checkout/payment", validateToken, payment);
+router.post("/checkout/verify-payment", validateToken, verifyPayment);
+
 module.exports = router;
