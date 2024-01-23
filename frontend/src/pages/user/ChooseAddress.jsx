@@ -18,6 +18,8 @@ import { useNavigate } from "react-router-dom";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import axios from "axios";
 import { getHeaders } from "../../utils/auth";
+import { ToastContainer } from "react-toastify";
+import { notifyChooseAddress } from "../../utils/toastify";
 
 function ChooseAddress() {
   const navigate = useNavigate();
@@ -26,7 +28,6 @@ function ChooseAddress() {
 
   const handleOnChange = (id) => {
     setSelectedAddress(id);
-    console.log(selectedAddress);
   };
 
   const fetchAddresses = async () => {
@@ -92,10 +93,9 @@ function ChooseAddress() {
             {addresses.map((address) => (
               <FormControlLabel
                 key={address._id}
-                sx={{ fontFamily: "poppins" }}
                 value={address._id}
                 control={<Radio />}
-                label={`${address.fullName},${address.phoneNo},${address.street},${address.city},${address.state},${address.pinCode}.`}
+                label={<Typography fontFamily={"poppins"}>{address.fullName}, {address.phoneNo}, {address.street}, {address.city}, {address.state}, {address.pinCode}.</Typography>}
                 onChange={() => handleOnChange(address._id)}
               />
             ))}
@@ -119,13 +119,25 @@ function ChooseAddress() {
             style={{ marginRight: "50px" }}
             className="custom-btn"
             onClick={() =>
+              selectedAddress ?
               navigate("/user/cart/checkout/order-summary", {
                 state: { id: selectedAddress },
-              })
+              }): notifyChooseAddress()
             }
           >
             Next
           </button>
+          <ToastContainer
+            position="top-center"
+            autoClose={3000}
+            hideProgressBar={true}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            theme="light"
+          />
         </Grid>
       </Grid>
     </>

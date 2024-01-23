@@ -9,6 +9,8 @@ const address = require("../models/addressModel");
 const coupon = require("../models/couponModel");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
+const orders = require("../models/orderDetailsModel");
+const easyInvoice =require("easyinvoice")
 // register user
 const registerUser = asyncHandler(async (req, res) => {
   const { userFormData } = req.body;
@@ -220,20 +222,23 @@ const getCartProducts = asyncHandler(async (req, res) => {
   try {
     const userId = req.user.id;
     let cart = await userCart.findOne({ user: userId });
-    if (!cart) {
+    if (cart) {
+      const populatedCart = await Promise.all(
+        cart.products.map(async (itemId) => {
+          let cartItem = await product.findById(itemId);
+          return cartItem;
+        })
+      );
+  
+      if (populatedCart) {
+        res.status(200).json(populatedCart);
+      }
+
+    }else{
       res.status(404).json("no cart for this user");
+
     }
 
-    const populatedCart = await Promise.all(
-      cart.products.map(async (itemId) => {
-        let cartItem = await product.findById(itemId);
-        return cartItem;
-      })
-    );
-
-    if (populatedCart) {
-      res.status(200).json(populatedCart);
-    }
   } catch (error) {
     console.log(error);
   }
@@ -391,7 +396,7 @@ const deleteAddress = asyncHandler(async (req, res) => {
 const getAddress = asyncHandler(async (req, res) => {
   try {
     const id = req.params.id;
-    const data = await address.findById(id);
+    const data = await address.findById({ _id: id });
     if (data) {
       // console.log(data);
       res.status(200).json(data);
@@ -458,6 +463,7 @@ const payment = asyncHandler(async (req, res) => {
         console.log(error);
         return res.status(500).json({ message: "something went wrong" });
       }
+      // console.log(order)
       res.status(200).json({ data: order });
     });
   } catch (error) {
@@ -468,10 +474,11 @@ const payment = asyncHandler(async (req, res) => {
 
 const verifyPayment = asyncHandler(async (req, res) => {
   try {
+    const { response } = req.body;
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-      req.body;
-    console.log(razorpay_order_id);
-    const sign = razorpay_order_id + "" + razorpay_payment_id;
+      response;
+    // console.log(response)
+    const sign = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSign = crypto
       .createHmac("sha256", process.env.KEY_SECRET)
       .update(sign.toString())
@@ -487,6 +494,112 @@ const verifyPayment = asyncHandler(async (req, res) => {
     return res.status(500).json({ message: "internal server error" });
   }
 });
+
+const addOrder = asyncHandler(async (req, res) => {
+  try {
+    const { productDetails, amount, orderId } = req.body.orderDetails;
+    const { paymentId } = req.body;
+    const { address } = req.body;
+    const userId = req.user.id;
+    if (
+      !productDetails ||
+      !amount ||
+      !orderId ||
+      !paymentId ||
+      !userId ||
+      !address
+    ) {
+      res.status(401);
+      throw new Error("All details are mandatory to place order");
+    } else {
+      const data = await orders.create({
+        orderId: orderId,
+        productDetails: productDetails,
+        userId: userId,
+        amount: amount,
+        paymentId: paymentId,
+        address: address,
+        date: Date.now(),
+      });
+      console.log(data);
+
+      //fetch cart and empty the cart after the order is placed
+      const cart = await userCart.deleteOne({user:userId})
+      res.status(200).json("order created successfully");
+    }
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json("some internal error occured!");
+  }
+});
+
+// const downloadInvoice= asyncHandler(async(req,res)=>{
+
+//   try{
+
+//   const userId = req.user.id
+//   const orderDetails = await orders.findOne({userId:userId})
+
+  
+//   const data = {
+//     documentTitle: "Invoice",
+//     currency: "INR",
+//     marginTop: 25,
+//     marginRight: 25,
+//     marginLeft: 25,
+//     marginBottom: 25,
+//     logo: "https://public.easyinvoice.cloud/img/watermark-draft.jpg", // Replace with your logo URL
+//     sender: {
+//       company: "Devcart",
+//       address: "kerala",
+//       zip: "000000",
+//       city: "palakkad",
+//       country: "India",
+//       taxNotation: "vatnone",
+//     },
+//     client: null,
+//     invoiceNumber: orderDetails._id.toString(),
+//     invoiceDate: orderDetails.createdAt.toISOString(),
+//     information: {
+//       number: orderDetails.phonenumber,
+//       date: orderDetails.createdAt.toISOString(),
+//       "due-date": "Nil", // Customize due date as needed
+//     },
+
+//     products: [
+//       {
+//         quantity: orderDetails.quantity,
+//         description: orderDetails.model,
+//         price: orderDetails.price,
+//         "tax-rate": 0, // You can customize the tax rate as needed
+//         total: orderDetails.price, // Total for the order details
+//       },
+//     ],
+//     amount: {
+//       subtotal: orderDetails.price.toFixed(2),
+//       total: orderDetails.price.toFixed(2),
+//     }, 
+//     bottomNotice: "Thank you for your order.",
+//   };
+
+//   // Generate PDF using EasyInvoice
+//   const pdfResult = await easyInvoice.createInvoice(data);
+//   const pdfBuffer = Buffer.from(pdfResult.pdf, "base64");
+
+//   // Set response headers for PDF download
+//   res.setHeader("Content-Disposition", 'attachment; filename="invoice.pdf"');
+//   res.setHeader("Content-Type", "application/pdf");
+
+//   // Send the PDF buffer as the response
+//   res.json(pdfBuffer);
+
+// } catch (error) {
+//   console.error("Error generating PDF:", error);
+//   res.status(500).json("Error generating invoice.");
+// }
+// })
+
 module.exports = {
   registerUser,
   loginUser,
@@ -509,4 +622,5 @@ module.exports = {
   checkCoupon,
   payment,
   verifyPayment,
+  addOrder,
 };

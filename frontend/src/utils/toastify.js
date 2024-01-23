@@ -1,5 +1,7 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+
 const notify = () => {
   toast.success("Added to cart", {
     position: "top-center",
@@ -90,6 +92,32 @@ const notifyAddressAdded = () => {
   });
 };
 
+const notifyChooseAddress = () => {
+  toast.error("Please select a address !", {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+};
+
+const notifyOrderPlaced = () => {
+  toast.success("Order placed !", {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  })
+}
+
 
 export {
   notify,
@@ -99,4 +127,6 @@ export {
   notifyUserExists,
   notifyAccount,
   notifyAddressAdded,
+  notifyChooseAddress,
+  notifyOrderPlaced
 };

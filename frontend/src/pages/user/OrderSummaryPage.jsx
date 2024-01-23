@@ -16,6 +16,8 @@ import AddIcon from "@mui/icons-material/Add";
 import { getHeaders } from "../../utils/auth";
 import axios from "axios";
 import useRazorpay from "react-razorpay";
+import { notifyOrderPlaced } from "../../utils/toastify";
+import { ToastContainer } from "react-toastify";
 
 function OrderSummaryPage() {
   const [Razorpay] = useRazorpay();
@@ -135,8 +137,13 @@ function OrderSummaryPage() {
   };
 
   const initPayment = (data) => {
+    const orderDetails = {
+      orderId: data.id,
+      amount: data.amount,
+      productDetails: cartProducts,
+    };
     const options = {
-      key: "rzp_test_e8CL0GdOPfaY1s",
+      key: "rzp_test_c63laqjRhLhKki",
       amount: data.amount,
       currency: data.currency,
       name: "order1",
@@ -147,12 +154,20 @@ function OrderSummaryPage() {
         try {
           const { data } = await axios.post(
             "http://localhost:3001/user/checkout/verify-payment",
-            response,
+            { response },
             {
               headers: getHeaders(),
             }
           );
-          console.log(data);
+
+          orderDetails !== null &&
+            navigate("/user/cart/checkout/order-confirm", {
+              state: {
+                details: orderDetails,
+                paymentId: response.razorpay_payment_id,
+                address: address,
+              },
+            });
         } catch (error) {
           console.log(error);
         }
@@ -227,7 +242,7 @@ function OrderSummaryPage() {
         <Typography fontFamily={"poppins"} fontWeight={600} pl={8} pr={1}>
           Deliver to :{" "}
         </Typography>
-        <Typography>
+        <Typography fontFamily={"poppins"}>
           {" "}
           {address ? addressString : "no address selected"}
         </Typography>
@@ -468,6 +483,17 @@ function OrderSummaryPage() {
           <button className="custom-btn" onClick={handlePayment}>
             Proceed
           </button>
+          <ToastContainer
+            position="top-center"
+            autoClose={3000}
+            hideProgressBar={true}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            theme="light"
+          />
         </Grid>
       </Grid>
     </>

@@ -133,6 +133,7 @@ function UserCartPage() {
           <Typography sx={{ color: "grey", fontFamily: "montserrat" }}>
             Loading....
           </Typography>
+          
         </Grid>
       ) : (
         cartProducts.map((product) => (

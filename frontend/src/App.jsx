@@ -16,6 +16,7 @@ import AddAddressPage from "./pages/user/AddAddressPage";
 import ViewAddresses from "./pages/user/ViewAddresses";
 import EditAddressPage from "./pages/user/EditAddressPage";
 import OrderSummaryPage from "./pages/user/OrderSummaryPage";
+import OrderConfirmPage from "./pages/user/OrderConfirmPage";
 
 function App() {
   return (
@@ -40,6 +41,8 @@ function App() {
           <Route path="user/address/update-address/:id" element={<EditAddressPage />}/>
           <Route path="user/cart/checkout/address" element={<ChooseAddress />}/>
           <Route path="user/cart/checkout/order-summary" element={<OrderSummaryPage />}/>
+          <Route path="user/cart/checkout/order-confirm" element={<OrderConfirmPage />}/>
+
 
         </Routes>
       </SearchProvider>
