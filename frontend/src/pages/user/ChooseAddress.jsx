@@ -49,26 +49,32 @@ function ChooseAddress() {
       <Grid md={12}>
         <Box sx={{ flexGrow: 1 }}>
           <AppBar
-            elevation={1}
+            elevation={0}
             position="static"
             sx={{
               position: "fixed",
               top: "0px",
               zIndex: "1",
-              bgcolor: "#7E30E1",
+              bgcolor: "#fff",
             }}
           >
             <Toolbar variant="dense">
               <IconButton
                 onClick={() => navigate(-1)}
                 edge="start"
-                color="inherit"
+                style={{ color: "#7E30E1" }}
                 aria-label="menu"
                 sx={{ mr: 2 }}
               >
                 <ArrowBackIcon />
               </IconButton>
-              <Typography variant="h6" color="inherit" component="div">
+              <Typography
+                color={"black"}
+                fontFamily={"montserrat"}
+                fontSize={"20px"}
+                fontWeight={800}
+                component="div"
+              >
                 Choose address
               </Typography>
             </Toolbar>
@@ -95,7 +101,12 @@ function ChooseAddress() {
                 key={address._id}
                 value={address._id}
                 control={<Radio />}
-                label={<Typography fontFamily={"poppins"}>{address.fullName}, {address.phoneNo}, {address.street}, {address.city}, {address.state}, {address.pinCode}.</Typography>}
+                label={
+                  <Typography fontFamily={"poppins"}>
+                    {address.fullName}, {address.phoneNo}, {address.street},{" "}
+                    {address.city}, {address.state}, {address.pinCode}.
+                  </Typography>
+                }
                 onChange={() => handleOnChange(address._id)}
               />
             ))}
@@ -119,10 +130,11 @@ function ChooseAddress() {
             style={{ marginRight: "50px" }}
             className="custom-btn"
             onClick={() =>
-              selectedAddress ?
-              navigate("/user/cart/checkout/order-summary", {
-                state: { id: selectedAddress },
-              }): notifyChooseAddress()
+              selectedAddress
+                ? navigate("/user/cart/checkout/order-summary", {
+                    state: { id: selectedAddress },
+                  })
+                : notifyChooseAddress()
             }
           >
             Next

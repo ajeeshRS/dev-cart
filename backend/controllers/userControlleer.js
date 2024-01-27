@@ -562,37 +562,57 @@ const getOrders = asyncHandler(async (req, res) => {
   }
 });
 
-const getOrder =asyncHandler(async(req,res)=>{
+const getOrder = asyncHandler(async (req, res) => {
   try {
-    const orderId =req.params.id
-    const data = await orders.find({orderId:orderId})
-    if(data){
-      res.status(200).json(data)
-    }
-    else{
-      res.status(404).json("order not found")
+    const orderId = req.params.id;
+    const data = await orders.find({ orderId: orderId });
+    if (data) {
+      res.status(200).json(data);
+    } else {
+      res.status(404).json("order not found");
     }
   } catch (error) {
-    console.log(error)
-    res.status(500).json("some internal error occured!")
+    console.log(error);
+    res.status(500).json("some internal error occured!");
   }
-})
+});
 
-const deleteOrder = asyncHandler(async(req,res)=>{
-try {
-  const orderId = req.params.id
-  const data = await orders.deleteOne({orderId:orderId})
-  
-  if(data){
-    res.status(200).json("Order cancelled !")
-  }else{
-    res.status(400).json("Error in cancelling order")
+const deleteOrder = asyncHandler(async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const data = await orders.deleteOne({ orderId: orderId });
+
+    if (data) {
+      res.status(200).json("Order cancelled !");
+    } else {
+      res.status(400).json("Error in cancelling order");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json("Some internal error occured!");
   }
-} catch (error) {
-  console.log(error)
-  res.status(500).json("Some internal error occured!")
-}
-})
+});
+
+const updateUserName = asyncHandler(async (req, res) => {
+  try {
+    const data = req.body.data;
+    const id = req.user.id;
+    const updatedUsername = {};
+    if (data.userName) {
+      updatedUsername.username = data.userName;
+    }
+    const result = await user.findByIdAndUpdate(id, updatedUsername, {
+      new: true,
+    });
+    if (result) {
+      res.status(200).json("username updated successfully");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json("some internal error occured!");
+  }
+});
+
 module.exports = {
   registerUser,
   loginUser,
@@ -619,5 +639,6 @@ module.exports = {
   getUserInfo,
   getOrders,
   getOrder,
-  deleteOrder
+  deleteOrder,
+  updateUserName,
 };

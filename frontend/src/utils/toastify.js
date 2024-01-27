@@ -1,7 +1,6 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 const notify = () => {
   toast.success("Added to cart", {
     position: "top-center",
@@ -115,8 +114,8 @@ const notifyOrderPlaced = () => {
     draggable: true,
     progress: undefined,
     theme: "light",
-  })
-}
+  });
+};
 const notifyAddToWishlist = () => {
   toast.success("Added to wishlist", {
     position: "top-center",
@@ -127,9 +126,33 @@ const notifyAddToWishlist = () => {
     draggable: true,
     progress: undefined,
     theme: "light",
-  })
-}
+  });
+};
 
+const notifyOrderCancel = () => {
+  toast.success("Order cancelled !", {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+};
+const notifyUsernameUpdated = () => {
+  toast.success("Username updated successfully!", {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+};
 
 export {
   notify,
@@ -141,5 +164,7 @@ export {
   notifyAddressAdded,
   notifyChooseAddress,
   notifyOrderPlaced,
-  notifyAddToWishlist
+  notifyAddToWishlist,
+  notifyOrderCancel,
+  notifyUsernameUpdated,
 };

@@ -14,7 +14,7 @@
   width: 400px;
   height: 40px;
   outline: 0;
-  border-radius: 5px;
+  border-radius: 10px;
   border: 1px solid rgb(231, 231, 231);
   padding-left: 10px;
   font-size: 17px;
@@ -49,4 +49,9 @@ app-bar {
 .nav-items:hover::after {
   transform: scaleX(1);
   transform-origin: bottom ;
+}
+
+.search-btn:hover {
+background-color: #590fb9;
+color: #fff;
 }

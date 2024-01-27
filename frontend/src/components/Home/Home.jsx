@@ -23,6 +23,8 @@ import image3 from "../../assets/rebekah-yip-wMT0oiL5XjA-unsplash.jpg";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { notify, notifyErr } from "../../utils/toastify";
+import "aos/dist/aos.css";
+import AOS from "aos";
 
 function Home() {
   const navigate = useNavigate();
@@ -157,6 +159,10 @@ function Home() {
     }
   };
 
+  useEffect(() => {
+    AOS.init(); // Initialize AOS
+  }, []);
+
   return (
     <>
       <Grid md={12} pt={8} pb={9}>
@@ -230,7 +236,7 @@ function Home() {
                   width: 270,
                   borderRadius: 3,
                   border: "1px solid #F3F8FF",
-                  height: 430,
+                  height: 260,
                   boxShadow: "1px 10px 15px -3px rgba(0,0,0,0.1)",
                   position: "relative",
                 }}
@@ -239,21 +245,25 @@ function Home() {
                   component="img"
                   image={`http://localhost:3001/uploads/${product.image.filename}`}
                   alt="Paella dish"
-                  sx={{ height: "200px" }}
+                  sx={{ height: "100px",objectFit:"cover" }}
                 />
                 <Link to={`/user/view-product/${product._id}`}>
                   <CardContent>
                     <Typography
                       fontFamily={"poppins"}
-                      variant="h5"
+                      variant="h7"
                       sx={{ color: "#607274" }}
                     >
                       {product.title}
                     </Typography>
-                    <Typography fontFamily={"montserrat"} fontWeight={500} className="typo" pt={2} variant="body2" fontSize={13}>
-                      {product.description}
-                    </Typography>
-                    <Typography sx={{ position: "absolute", bottom: "50px" }} className="typo" fontWeight={600} pt={2} pb={1}>
+
+                    <Typography
+                      sx={{ position: "absolute", bottom: "50px" }}
+                      className="typo"
+                      fontWeight={600}
+                      pt={2}
+                      pb={1}
+                    >
                       ₹{product.price}
                     </Typography>
                   </CardContent>
@@ -329,11 +339,12 @@ function Home() {
           >
             {slicedMouses.map((product, index) => (
               <Card
+                data-aos="zoom-in"
                 key={index}
                 sx={{
                   width: 270,
                   borderRadius: 3,
-                  height: 430,
+                  height: 260,
                   boxShadow: "0px 10px 15px -3px rgba(0,0,0,0.1)",
                   position: "relative",
                 }}
@@ -342,21 +353,25 @@ function Home() {
                   component="img"
                   image={`http://localhost:3001/uploads/${product.image.filename}`}
                   alt="Paella dish"
-                  sx={{ height: "200px" }}
+                  sx={{ height: "100px",objectFit:"contain" }}
                 />
                 <Link to={`/user/view-product/${product._id}`}>
                   <CardContent>
                     <Typography
                       fontFamily={"poppins"}
-                      variant="h5"
+                      variant="h7"
                       sx={{ color: "#607274" }}
                     >
                       {product.title}
                     </Typography>
-                    <Typography className="typo" pt={2} variant="body2" fontFamily={"montserrat"} fontWeight={500} fontSize={13}>
-                      {product.description}
-                    </Typography>
-                    <Typography sx={{ position: "absolute", bottom: "50px" }} className="typo" fontWeight={600} pt={2} pb={1}>
+                    
+                    <Typography
+                      sx={{ position: "absolute", bottom: "50px" }}
+                      className="typo"
+                      fontWeight={600}
+                      pt={2}
+                      pb={1}
+                    >
                       ₹{product.price}
                     </Typography>
                   </CardContent>
@@ -425,11 +440,12 @@ function Home() {
           >
             {slicedMonitors.map((product, index) => (
               <Card
+                data-aos="zoom-in"
                 key={index}
                 sx={{
                   width: 270,
                   borderRadius: 3,
-                  height: 430,
+                  height: 260,
                   boxShadow: "0px 10px 15px -3px rgba(0,0,0,0.1)",
                   position: "relative",
                 }}
@@ -438,21 +454,25 @@ function Home() {
                   component="img"
                   image={`http://localhost:3001/uploads/${product.image.filename}`}
                   alt="Paella dish"
-                  sx={{ height: "200px" }}
+                  sx={{ height: "100px",objectFit:"contain" }}
                 />
                 <Link to={`/user/view-product/${product._id}`}>
                   <CardContent>
                     <Typography
                       fontFamily={"poppins"}
-                      variant="h6"
+                      variant="h7"
                       sx={{ color: "#607274" }}
                     >
                       {product.title}
                     </Typography>
-                    <Typography className="typo" pt={2} variant="body2" fontFamily={"montserrat"} fontWeight={500} fontSize={13}>
-                      {product.description}
-                    </Typography>
-                    <Typography sx={{ position: "absolute", bottom: "50px" }} className="typo" fontWeight={600} pt={2} pb={1}>
+                    
+                    <Typography
+                      sx={{ position: "absolute", bottom: "50px" }}
+                      className="typo"
+                      fontWeight={600}
+                      pt={2}
+                      pb={1}
+                    >
                       ₹{product.price}
                     </Typography>
                   </CardContent>

@@ -80,7 +80,7 @@ function ViewProduct() {
     }
   };
 
-  const handleAddToWishlist=async(productId)=>{
+  const handleAddToWishlist = async (productId) => {
     try {
       const response = await axios.post(
         `http://localhost:3001/user/wishlist/${productId}`,
@@ -88,12 +88,12 @@ function ViewProduct() {
         {
           headers: getHeaders(),
         }
-        );
-        notifyAddToWishlist()
+      );
+      notifyAddToWishlist();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   return (
     <>
       {product ? (
@@ -250,7 +250,7 @@ function ViewProduct() {
                 display={"flex"}
                 flexDirection={"row"}
                 justifyContent={"space-between"}
-              > 
+              >
                 <button
                   className="custom-btn"
                   onClick={() => handleAddToCartButton(product._id)}
@@ -258,7 +258,6 @@ function ViewProduct() {
                   Add to cart
                 </button>
 
-              
                 <ToastContainer
                   position="top-center"
                   autoClose={3000}
@@ -270,7 +269,12 @@ function ViewProduct() {
                   draggable
                   theme="light"
                 />
-                <button className="custom-btn" onClick={()=>handleAddToWishlist(product._id)}>Add to wishlist</button>
+                <button
+                  className="custom-btn"
+                  onClick={() => handleAddToWishlist(product._id)}
+                >
+                  Add to wishlist
+                </button>
               </Grid>
             </Grid>
           </Grid>

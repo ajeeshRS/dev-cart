@@ -56,13 +56,13 @@ function WishList() {
       <Grid md={12}>
         <Box sx={{ flexGrow: 1 }}>
           <AppBar
-            elevation={1}
+            elevation={0}
             position="static"
             sx={{
               position: "fixed",
               top: "0px",
               zIndex: "1",
-              bgcolor: "#7E30E1",
+              bgcolor: "#fff",
             }}
           >
             <Toolbar variant="dense">
@@ -71,11 +71,20 @@ function WishList() {
                 edge="start"
                 color="inherit"
                 aria-label="menu"
-                sx={{ mr: 2 }}
+                sx={{ mr: 2, color: "#7E30E1" }}
               >
                 <ArrowBackIcon />
               </IconButton>
-              <Typography variant="h6" color="inherit" component="div">
+              <Typography
+                variant="h6"
+                color="inherit"
+                component="div"
+                sx={{
+                  color: "black",
+                  fontFamily: "montserrat",
+                  fontWeight: 800,
+                }}
+              >
                 Wishlist
               </Typography>
               <Grid position={"absolute"} right={30}>

@@ -20,6 +20,9 @@ import OrderConfirmPage from "./pages/user/OrderConfirmPage";
 import UserProfilePage from "./pages/user/UserProfilePage";
 import UserOrderPage from "./pages/user/UserOrderPage";
 import ViewOrderPage from "./pages/user/ViewOrderPage";
+import EditProfilePage from "./pages/user/EditProfilePage";
+import ChangeUsernamePage from "./pages/user/ChangeUsernamePage";
+import ResetPasswordPage from "./pages/user/ResetPasswordPage";
 
 function App() {
   return (
@@ -48,7 +51,11 @@ function App() {
           <Route path="/user/profile" element={<UserProfilePage />}/>
           <Route path="/user/profile/orders" element={<UserOrderPage />}/>
           <Route path="/user/profile/orders/view-order/:id" element={<ViewOrderPage/>}/>
+          <Route path="/user/profile/edit-profile" element={<EditProfilePage/>}/>
+          <Route path="/user/profile/edit-profile/reset-password" element={<ResetPasswordPage/>}/>
+          <Route path="/user/profile/edit-profile/change-username" element={<ChangeUsernamePage/>}/>
 
+        
 
 
         </Routes>

@@ -49,9 +49,8 @@ function UserCartPage() {
       setCartProducts(response.data);
     } catch (error) {
       console.log(error);
-    }finally{
+    } finally {
       setLoading(false);
-
     }
   };
 
@@ -88,31 +87,38 @@ function UserCartPage() {
       <Grid md={12}>
         <Box sx={{ flexGrow: 1 }}>
           <AppBar
-            elevation={1}
+            elevation={0}
             position="static"
             sx={{
               position: "fixed",
               top: "0px",
               zIndex: "1",
-              bgcolor: "#7E30E1",
+              bgcolor: "#fff",
             }}
           >
             <Toolbar variant="dense">
               <IconButton
                 onClick={() => navigate(-1)}
                 edge="start"
-                color="inherit"
-                aria-label="menu"
+                style={{ color: "#7E30E1" }}
                 sx={{ mr: 2 }}
               >
                 <ArrowBackIcon />
               </IconButton>
-              <Typography variant="h6" color="inherit" component="div">
+              <Typography
+                component="div"
+                sx={{
+                  fontFamily: "montserrat",
+                  fontWeight: "800",
+                  color: "black",
+                  fontSize: "20px",
+                }}
+              >
                 Cart
               </Typography>
               <Grid position={"absolute"} right={30}>
                 <IconButton
-                  sx={{ color: "white" }}
+                  sx={{ color: "black" }}
                   onClick={() => navigate("/user/wishlist")}
                 >
                   <FavoriteIcon />
@@ -136,7 +142,7 @@ function UserCartPage() {
             Loading....
           </Typography>
         </Grid>
-      ) :(
+      ) : (
         cartProducts.map((product) => (
           <Grid
             md={12}
@@ -232,7 +238,6 @@ function UserCartPage() {
             </Grid>
           </Grid>
         ))
-        
       )}
       {cartProducts.length > 0 && loading == false ? (
         <Grid
@@ -254,8 +259,9 @@ function UserCartPage() {
             <button className="custom-btn">checkout</button>
           </Link>
         </Grid>
-      ):(cartProducts.length === 0 &&
-        loading == false &&(
+      ) : (
+        cartProducts.length === 0 &&
+        loading == false && (
           <Grid
             md={12}
             pt={10}

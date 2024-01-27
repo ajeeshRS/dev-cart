@@ -11,6 +11,8 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getHeaders } from "../../utils/auth";
+import { ToastContainer } from "react-toastify";
+import { notifyOrderCancel } from "../../utils/toastify";
 
 function UserOrderPage() {
   const [orderData, setOrderData] = useState([]);
@@ -42,7 +44,10 @@ function UserOrderPage() {
         }
       );
       if (response) {
-        console.log(response.data);
+        setOrderData((prevData) =>
+          prevData.filter((order) => order.orderId !== orderId)
+        );
+        notifyOrderCancel();
       }
     } catch (error) {
       console.log(error);
@@ -51,7 +56,7 @@ function UserOrderPage() {
 
   useEffect(() => {
     fetchOrders();
-  }, [orderData]);
+  }, []);
 
   return (
     <>
@@ -176,12 +181,34 @@ function UserOrderPage() {
               >
                 Cancel
               </button>
+              <ToastContainer
+                position="top-center"
+                autoClose={3000}
+                hideProgressBar={true}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                theme="light"
+              />
             </Grid>
           </Grid>
         ))
       ) : (
-        <Grid pt={10} width={"100%"} height={"90vh"} display={"flex"} justifyContent={"center"} alignItems={"center"}>
-          <Typography sx={{fontFamily:"montserrat",fontWeight:"500",color:"grey"}}>no orders here !</Typography>
+        <Grid
+          pt={10}
+          width={"100%"}
+          height={"90vh"}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <Typography
+            sx={{ fontFamily: "montserrat", fontWeight: "500", color: "grey" }}
+          >
+            no orders here !
+          </Typography>
         </Grid>
       )}
     </>

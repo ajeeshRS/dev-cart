@@ -141,8 +141,8 @@ getCartItems()
           </Typography>
         </Grid>
         <Grid md={4} width={"500px"}>
-          <input style={{width:"400px",height:"40px"}} onChange={handleOnChange} onKeyDown={handleKeyPress} type="text" value={searchTerm} className="search-input" placeholder="Search products" />
-          <IconButton  onClick={searchButton} sx={{color:'#7E30E1'}} size="large">
+          <input style={{width:"400px",height:"40px",borderRadius:"50px"}} onChange={handleOnChange} onKeyDown={handleKeyPress} type="text" value={searchTerm} className="search-input" placeholder="Search products" />
+          <IconButton className="search-btn"   onClick={searchButton} sx={{color:'#fff',backgroundColor:"#7E30E1",marginLeft:"10px","&:hover": { color: "#fff",backgroundColor:"#6018BE" },transition:"0.3s ease-in"}}  size="medium">
             <SearchOutlined />
           </IconButton>
         </Grid>

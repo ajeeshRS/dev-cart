@@ -18,59 +18,53 @@ function OrderConfirmPage() {
   const addressString = `${address.phoneNo},${address.street},${address.state}`;
   const productDetails = orderDetails.productDetails;
 
-
-    
-    const generateInvoice = () => {
-
-      try {
-        
-        const data = {
-          documentTitle: "Invoice",
-          currency: "INR",
-          taxNotation: "vat",
-          marginTop: 25,
-          marginRight: 25,
-          marginLeft: 25,
-          marginBottom: 25,
-          sender: {
-            company: "DevCart",
-            address: "123 Main Street",
-            zip: "12345",
-            city: "Palghat",
-            country: "India",
-          },
-          client: {
-            company: `${address.fullName}`,
-            address: `${addressString}`,
-            zip: `${address.pinCode}`,
-            city: `${address.city}`,
-            country: "India",
-          },
-          information: {
-            number: '2021.0001',
-            date: new Date().toLocaleDateString()
-            
+  const generateInvoice = () => {
+    try {
+      const data = {
+        documentTitle: "Invoice",
+        currency: "INR",
+        taxNotation: "vat",
+        marginTop: 25,
+        marginRight: 25,
+        marginLeft: 25,
+        marginBottom: 25,
+        sender: {
+          company: "DevCart",
+          address: "123 Main Street",
+          zip: "12345",
+          city: "Palghat",
+          country: "India",
         },
-    
-          products: productDetails.map((product) => ({
-            quantity: product.quantity,
-            description: product.title,
-            'tax-rate': 0, // in percentage
-            price:product.price,
-          })),
-         
-          'bottom-notice': "note : The above price is the amount before discount, thank you !"
-          
-        };
-        easyinvoice.createInvoice(data, (result) => {
-          easyinvoice.download("invoice.pdf", result.pdf);
-        });
-      } catch (error) {
-        console.log(error)
-      }
-  
-  }
-  
+        client: {
+          company: `${address.fullName}`,
+          address: `${addressString}`,
+          zip: `${address.pinCode}`,
+          city: `${address.city}`,
+          country: "India",
+        },
+        information: {
+          number: "2021.0001",
+          date: new Date().toLocaleDateString(),
+        },
+
+        products: productDetails.map((product) => ({
+          quantity: product.quantity,
+          description: product.title,
+          "tax-rate": 0, // in percentage
+          price: product.price,
+        })),
+
+        "bottom-notice":
+          "note : The above price is the amount before discount, thank you !",
+      };
+      easyinvoice.createInvoice(data, (result) => {
+        easyinvoice.download("invoice.pdf", result.pdf);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const addOrder = async () => {
     try {
       const res = await axios.post(
@@ -136,18 +130,21 @@ function OrderConfirmPage() {
             color: "#6119BF",
             cursor: "pointer",
           }}
-         onClick={()=>generateInvoice()}
+          onClick={() => generateInvoice()}
         >
           Download invoice
         </Typography>
-        <button className="custom-btn1" onClick={() => {
-          navigate("/user/home")
-          window.location.reload()}}>
+        <button
+          className="custom-btn1"
+          onClick={() => {
+            navigate("/user/home");
+            window.location.reload();
+          }}
+        >
           Continue shopping
         </button>
       </Grid>
     </>
   );
-
-  }
+}
 export default OrderConfirmPage;

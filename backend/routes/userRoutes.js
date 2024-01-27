@@ -26,6 +26,7 @@ const {
   getOrders,
   getOrder,
   deleteOrder,
+  updateUserName,
 } = require("../controllers/userControlleer");
 const validateToken = require("../middlewares/validateTokenhandler");
 const router = express.Router();
@@ -49,11 +50,12 @@ router.put("/update-address/:id", validateToken, updateAddress);
 router.delete("/delete-address/:id", validateToken, deleteAddress);
 router.get("/address/:id", validateToken, getAddress);
 router.post("/check-coupon", validateToken, checkCoupon);
-router.post("/order/add-order",validateToken,addOrder)
-router.get("/get",validateToken,getUserInfo)
-router.get("/get/orders",validateToken,getOrders)
-router.get("/get/order/:id",validateToken,getOrder)
-router.delete("/delete/order/:id",validateToken,deleteOrder)
+router.post("/order/add-order", validateToken, addOrder);
+router.get("/get", validateToken, getUserInfo);
+router.get("/get/orders", validateToken, getOrders);
+router.get("/get/order/:id", validateToken, getOrder);
+router.delete("/delete/order/:id", validateToken, deleteOrder);
+router.put("/update-username", validateToken, updateUserName);
 // payment routes
 router.post("/checkout/payment", validateToken, payment);
 router.post("/checkout/verify-payment", validateToken, verifyPayment);

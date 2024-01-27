@@ -141,7 +141,7 @@ function OrderSummaryPage() {
       orderId: data.id,
       amount: data.amount,
       productDetails: cartProducts,
-      discount:discountAmount ? discountAmount : null
+      discount: discountAmount ? discountAmount : null,
     };
     const options = {
       key: "rzp_test_c63laqjRhLhKki",
@@ -213,26 +213,32 @@ function OrderSummaryPage() {
       <Grid md={12}>
         <Box sx={{ flexGrow: 1 }}>
           <AppBar
-            elevation={1}
+            elevation={0}
             position="static"
             sx={{
               position: "fixed",
               top: "0px",
               zIndex: "1",
-              bgcolor: "#7E30E1",
+              bgcolor: "#fff",
             }}
           >
             <Toolbar variant="dense">
               <IconButton
                 onClick={() => navigate(-1)}
                 edge="start"
-                color="inherit"
+                style={{ color: "#7E30E1" }}
                 aria-label="menu"
                 sx={{ mr: 2 }}
               >
                 <ArrowBackIcon />
               </IconButton>
-              <Typography variant="h6" color="inherit" component="div">
+              <Typography
+                color={"black"}
+                fontFamily={"montserrat"}
+                fontSize={"20px"}
+                fontWeight={800}
+                component="div"
+              >
                 Order Summary
               </Typography>
             </Toolbar>

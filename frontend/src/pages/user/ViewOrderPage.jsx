@@ -14,9 +14,9 @@ import { getHeaders } from "../../utils/auth";
 import easyinvoice from "easyinvoice";
 
 function ViewOrderPage() {
-  const [details,setDetails]= useState([])
+  const [details, setDetails] = useState([]);
   const [productData, setProductData] = useState([]);
-  const [addressData,setAddressData] =useState([])
+  const [addressData, setAddressData] = useState([]);
   const navigate = useNavigate();
   const { id } = useParams();
   const fetchOrder = async () => {
@@ -28,22 +28,19 @@ function ViewOrderPage() {
         }
       );
       if (response) {
-        setDetails(response.data[0])
-        setProductData(response.data[0].productDetails)
-        setAddressData(response.data[0].address)
+        setDetails(response.data[0]);
+        setProductData(response.data[0].productDetails);
+        setAddressData(response.data[0].address);
       }
     } catch (error) {
       console.log(error);
     }
-
   };
 
   const addressString = `${addressData.phoneNo},${addressData.street},${addressData.state}`;
 
   const generateInvoice = () => {
-
     try {
-      
       const data = {
         documentTitle: "Invoice",
         currency: "INR",
@@ -67,29 +64,27 @@ function ViewOrderPage() {
           country: "India",
         },
         information: {
-          number: '2021.0001',
-          date: new Date().toLocaleDateString()
-          
-      },
-  
+          number: "2021.0001",
+          date: new Date().toLocaleDateString(),
+        },
+
         products: productData.map((product) => ({
           quantity: product.quantity,
           description: product.title,
-          'tax-rate': 0, // in percentage
-          price:product.price,
+          "tax-rate": 0, // in percentage
+          price: product.price,
         })),
-       
-        'bottom-notice': "note : The above price is the amount before discount, thank you !", // optional
-        
+
+        "bottom-notice":
+          "note : The above price is the amount before discount, thank you !", // optional
       };
       easyinvoice.createInvoice(data, (result) => {
         easyinvoice.download("invoice.pdf", result.pdf);
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-
-}
+  };
 
   useEffect(() => {
     fetchOrder();
@@ -144,26 +139,54 @@ function ViewOrderPage() {
           </AppBar>
         </Box>
       </Grid>
-      <Grid width={'100%'} pt={10} pl={8} pr={8} display={"flex"} justifyContent={"space-between"} alignItems={"center"}>
+      <Grid
+        width={"100%"}
+        pt={10}
+        pl={8}
+        pr={8}
+        display={"flex"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+      >
         <Grid>
-      <Typography sx={{fontFamily:"montserrat",fontWeight:"600",}}>Billing Address</Typography>
-      <Typography sx={{fontFamily:"poppins",color:"black"}}>{addressData.fullName}, <br/>
-      {addressData.street},<br/>
-      {addressData.state},<br/>
-      {addressData.phoneNo},<br/>
-      {addressData.pinCode}
-      </Typography>
-      
-
+          <Typography sx={{ fontFamily: "montserrat", fontWeight: "600" }}>
+            Billing Address
+          </Typography>
+          <Typography sx={{ fontFamily: "poppins", color: "black" }}>
+            {addressData.fullName}, <br />
+            {addressData.street},<br />
+            {addressData.state},<br />
+            {addressData.phoneNo},<br />
+            {addressData.pinCode}
+          </Typography>
         </Grid>
-      <Grid>
-        <Typography sx={{fontFamily:"montserrat",fontWeight:"500",color:"grey"}}>#{details.orderId}</Typography>
-        <Typography sx={{fontFamily:"montserrat",fontWeight:"500",}}>Payment id :  {details.paymentId}</Typography>
-        <Typography sx={{fontFamily:"montserrat",fontWeight:"600",}}>Total amount :  ₹{details.amount/100}</Typography>
-        <Typography onClick={()=>generateInvoice()} pt={1} sx={{fontFamily:"montserrat",fontWeight:"600",color:"#7E30E1",cursor:"pointer"}}>Download invoice</Typography>
+        <Grid>
+          <Typography
+            sx={{ fontFamily: "montserrat", fontWeight: "500", color: "grey" }}
+          >
+            #{details.orderId}
+          </Typography>
+          <Typography sx={{ fontFamily: "montserrat", fontWeight: "500" }}>
+            Payment id : {details.paymentId}
+          </Typography>
+          <Typography sx={{ fontFamily: "montserrat", fontWeight: "600" }}>
+            Total amount : ₹{details.amount / 100}
+          </Typography>
+          <Typography
+            onClick={() => generateInvoice()}
+            pt={1}
+            sx={{
+              fontFamily: "montserrat",
+              fontWeight: "600",
+              color: "#7E30E1",
+              cursor: "pointer",
+            }}
+          >
+            Download invoice
+          </Typography>
+        </Grid>
       </Grid>
-      </Grid>
-      {productData.map((product)=>(
+      {productData.map((product) => (
         <Grid
           md={12}
           sx={{ cursor: "pointer" }}
@@ -196,29 +219,30 @@ function ViewOrderPage() {
               color={"black"}
             >
               <Typography
-                  fontFamily={"poppins"}
-                  color={"#607274"}
-                  fontWeight={500}
-                >
-                  {product.title}
-                </Typography>
-                <Typography fontFamily={"poppins"} fontWeight={500}>
-                  {product.brand}
-                </Typography>
-                <Typography fontFamily={"poppins"} fontWeight={500}>
-                  {product.description}
-                </Typography>
-                <Typography fontFamily={"montserrat"} fontWeight={600}>
-                  ₹{product.price}
-                </Typography>
+                fontFamily={"poppins"}
+                color={"#607274"}
+                fontWeight={500}
+              >
+                {product.title}
+              </Typography>
+              <Typography fontFamily={"poppins"} fontWeight={500}>
+                {product.brand}
+              </Typography>
+              <Typography fontFamily={"poppins"} fontWeight={500}>
+                {product.description}
+              </Typography>
+              <Typography fontFamily={"montserrat"} fontWeight={600}>
+                ₹{product.price}
+              </Typography>
             </Grid>
           </Link>
           <Grid>
-            <Typography sx={{fontFamily:"poppins",fontWeight:"500"}}>Quantity: { product.quantity}</Typography>
+            <Typography sx={{ fontFamily: "poppins", fontWeight: "500" }}>
+              Quantity: {product.quantity}
+            </Typography>
           </Grid>
         </Grid>
-        ))
-      }
+      ))}
     </>
   );
 }
