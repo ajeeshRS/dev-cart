@@ -117,6 +117,18 @@ const notifyOrderPlaced = () => {
     theme: "light",
   })
 }
+const notifyAddToWishlist = () => {
+  toast.success("Added to wishlist", {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  })
+}
 
 
 export {
@@ -128,5 +140,6 @@ export {
   notifyAccount,
   notifyAddressAdded,
   notifyChooseAddress,
-  notifyOrderPlaced
+  notifyOrderPlaced,
+  notifyAddToWishlist
 };

@@ -56,10 +56,11 @@ function OrderConfirmPage() {
             quantity: product.quantity,
             description: product.title,
             'tax-rate': 0, // in percentage
-            price: product.price,
+            price:product.price,
           })),
-
-          'bottom-notice': "Thank you for your order!", // optional
+         
+          'bottom-notice': "note : The above price is the amount before discount, thank you !"
+          
         };
         easyinvoice.createInvoice(data, (result) => {
           easyinvoice.download("invoice.pdf", result.pdf);
@@ -139,7 +140,9 @@ function OrderConfirmPage() {
         >
           Download invoice
         </Typography>
-        <button className="custom-btn1" onClick={() => navigate("/user/home")}>
+        <button className="custom-btn1" onClick={() => {
+          navigate("/user/home")
+          window.location.reload()}}>
           Continue shopping
         </button>
       </Grid>

@@ -25,6 +25,9 @@ paymentId:{
 address:{
     type:Object,
     required:true
+},
+discount:{
+    type:Number
 }
 ,
 date:{

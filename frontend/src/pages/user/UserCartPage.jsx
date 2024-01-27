@@ -47,9 +47,11 @@ function UserCartPage() {
         headers: getHeaders(),
       });
       setCartProducts(response.data);
-      setLoading(false);
     } catch (error) {
       console.log(error);
+    }finally{
+      setLoading(false);
+
     }
   };
 
@@ -133,9 +135,8 @@ function UserCartPage() {
           <Typography sx={{ color: "grey", fontFamily: "montserrat" }}>
             Loading....
           </Typography>
-          
         </Grid>
-      ) : (
+      ) :(
         cartProducts.map((product) => (
           <Grid
             md={12}
@@ -231,6 +232,7 @@ function UserCartPage() {
             </Grid>
           </Grid>
         ))
+        
       )}
       {cartProducts.length > 0 && loading == false ? (
         <Grid
@@ -252,9 +254,8 @@ function UserCartPage() {
             <button className="custom-btn">checkout</button>
           </Link>
         </Grid>
-      ) : (
-        cartProducts.length === 0 &&
-        loading == false && (
+      ):(cartProducts.length === 0 &&
+        loading == false &&(
           <Grid
             md={12}
             pt={10}

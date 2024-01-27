@@ -220,7 +220,7 @@ getCartItems()
                   transformOrigin={{ horizontal: "right", vertical: "top" }}
                   anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                 >
-                  <MenuItem>
+                  <MenuItem onClick={()=>navigate("/user/profile")}>
                   <ListItemIcon>
                   <Person/>
                   </ListItemIcon>

@@ -10,7 +10,7 @@ const coupon = require("../models/couponModel");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const orders = require("../models/orderDetailsModel");
-const easyInvoice =require("easyinvoice")
+const easyInvoice = require("easyinvoice");
 // register user
 const registerUser = asyncHandler(async (req, res) => {
   const { userFormData } = req.body;
@@ -229,16 +229,13 @@ const getCartProducts = asyncHandler(async (req, res) => {
           return cartItem;
         })
       );
-  
+
       if (populatedCart) {
         res.status(200).json(populatedCart);
       }
-
-    }else{
+    } else {
       res.status(404).json("no cart for this user");
-
     }
-
   } catch (error) {
     console.log(error);
   }
@@ -497,10 +494,11 @@ const verifyPayment = asyncHandler(async (req, res) => {
 
 const addOrder = asyncHandler(async (req, res) => {
   try {
-    const { productDetails, amount, orderId } = req.body.orderDetails;
+    const { productDetails, amount, orderId, discount } = req.body.orderDetails;
     const { paymentId } = req.body;
     const { address } = req.body;
     const userId = req.user.id;
+    console.log(discount);
     if (
       !productDetails ||
       !amount ||
@@ -517,6 +515,7 @@ const addOrder = asyncHandler(async (req, res) => {
         productDetails: productDetails,
         userId: userId,
         amount: amount,
+        discount: discount,
         paymentId: paymentId,
         address: address,
         date: Date.now(),
@@ -524,82 +523,76 @@ const addOrder = asyncHandler(async (req, res) => {
       console.log(data);
 
       //fetch cart and empty the cart after the order is placed
-      const cart = await userCart.deleteOne({user:userId})
+      const cart = await userCart.deleteOne({ user: userId });
       res.status(200).json("order created successfully");
     }
-
   } catch (error) {
     console.log(error);
     res.status(500).json("some internal error occured!");
   }
 });
 
-// const downloadInvoice= asyncHandler(async(req,res)=>{
+const getUserInfo = asyncHandler(async (req, res) => {
+  try {
+    const user = req.user;
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json("error fetching in user details");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json("some internal error occured!");
+  }
+});
 
-//   try{
+const getOrders = asyncHandler(async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const data = await orders.find({ userId: userId });
+    if (data) {
+      console.log(data);
+      res.status(200).json(data);
+    } else {
+      res.status(404).json("orders not found or error in fetching");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json("some internal error");
+  }
+});
 
-//   const userId = req.user.id
-//   const orderDetails = await orders.findOne({userId:userId})
+const getOrder =asyncHandler(async(req,res)=>{
+  try {
+    const orderId =req.params.id
+    const data = await orders.find({orderId:orderId})
+    if(data){
+      res.status(200).json(data)
+    }
+    else{
+      res.status(404).json("order not found")
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(500).json("some internal error occured!")
+  }
+})
 
+const deleteOrder = asyncHandler(async(req,res)=>{
+try {
+  const orderId = req.params.id
+  const data = await orders.deleteOne({orderId:orderId})
   
-//   const data = {
-//     documentTitle: "Invoice",
-//     currency: "INR",
-//     marginTop: 25,
-//     marginRight: 25,
-//     marginLeft: 25,
-//     marginBottom: 25,
-//     logo: "https://public.easyinvoice.cloud/img/watermark-draft.jpg", // Replace with your logo URL
-//     sender: {
-//       company: "Devcart",
-//       address: "kerala",
-//       zip: "000000",
-//       city: "palakkad",
-//       country: "India",
-//       taxNotation: "vatnone",
-//     },
-//     client: null,
-//     invoiceNumber: orderDetails._id.toString(),
-//     invoiceDate: orderDetails.createdAt.toISOString(),
-//     information: {
-//       number: orderDetails.phonenumber,
-//       date: orderDetails.createdAt.toISOString(),
-//       "due-date": "Nil", // Customize due date as needed
-//     },
-
-//     products: [
-//       {
-//         quantity: orderDetails.quantity,
-//         description: orderDetails.model,
-//         price: orderDetails.price,
-//         "tax-rate": 0, // You can customize the tax rate as needed
-//         total: orderDetails.price, // Total for the order details
-//       },
-//     ],
-//     amount: {
-//       subtotal: orderDetails.price.toFixed(2),
-//       total: orderDetails.price.toFixed(2),
-//     }, 
-//     bottomNotice: "Thank you for your order.",
-//   };
-
-//   // Generate PDF using EasyInvoice
-//   const pdfResult = await easyInvoice.createInvoice(data);
-//   const pdfBuffer = Buffer.from(pdfResult.pdf, "base64");
-
-//   // Set response headers for PDF download
-//   res.setHeader("Content-Disposition", 'attachment; filename="invoice.pdf"');
-//   res.setHeader("Content-Type", "application/pdf");
-
-//   // Send the PDF buffer as the response
-//   res.json(pdfBuffer);
-
-// } catch (error) {
-//   console.error("Error generating PDF:", error);
-//   res.status(500).json("Error generating invoice.");
-// }
-// })
-
+  if(data){
+    res.status(200).json("Order cancelled !")
+  }else{
+    res.status(400).json("Error in cancelling order")
+  }
+} catch (error) {
+  console.log(error)
+  res.status(500).json("Some internal error occured!")
+}
+})
 module.exports = {
   registerUser,
   loginUser,
@@ -623,4 +616,8 @@ module.exports = {
   payment,
   verifyPayment,
   addOrder,
+  getUserInfo,
+  getOrders,
+  getOrder,
+  deleteOrder
 };

@@ -164,11 +164,12 @@ function ProductList() {
                 onClick={() => {
                   toggleFavorite(product._id);
                 }}
+                
               >
                 {favorites.includes(product._id) ? (
-                  <FavoriteIcon />
+                  <FavoriteIcon sx={{ color: "#C3ACD0" }} />
                 ) : (
-                  <FavoriteBorder />
+                  <FavoriteBorder sx={{color:"black"}}/>
                 )}
               </IconButton>
             </Grid>

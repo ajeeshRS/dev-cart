@@ -17,11 +17,12 @@ import { getHeaders } from "../../utils/auth";
 import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
 import Favorite from "@mui/icons-material/Favorite";
 import { ToastContainer } from "react-toastify";
-import { notify, notifyErr } from "../../utils/toastify";
+import { notify, notifyAddToWishlist, notifyErr } from "../../utils/toastify";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 function ViewProduct() {
   const navigate = useNavigate();
 
-  const hanldeBackButton = () => {
+  const handleBackButton = () => {
     navigate(-1);
   };
   const [product, setProduct] = useState(null);
@@ -78,6 +79,21 @@ function ViewProduct() {
       notifyErr();
     }
   };
+
+  const handleAddToWishlist=async(productId)=>{
+    try {
+      const response = await axios.post(
+        `http://localhost:3001/user/wishlist/${productId}`,
+        {},
+        {
+          headers: getHeaders(),
+        }
+        );
+        notifyAddToWishlist()
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <>
       {product ? (
@@ -104,7 +120,7 @@ function ViewProduct() {
                   }}
                 >
                   <IconButton
-                    onClick={() => hanldeBackButton()}
+                    onClick={() => handleBackButton()}
                     edge="start"
                     style={{ color: "#7E30E1" }}
                     aria-label="menu"
@@ -115,7 +131,7 @@ function ViewProduct() {
                   <Grid md={12}>
                     <Link to={"/user/wishlist"}>
                       <IconButton sx={{ color: "black", marginRight: "10px" }}>
-                        <Favorite />
+                        <FavoriteBorder />
                       </IconButton>
                     </Link>
                     <Link to={"/user/cart"}>
@@ -234,13 +250,15 @@ function ViewProduct() {
                 display={"flex"}
                 flexDirection={"row"}
                 justifyContent={"space-between"}
-              >
+              > 
                 <button
                   className="custom-btn"
                   onClick={() => handleAddToCartButton(product._id)}
                 >
                   Add to cart
                 </button>
+
+              
                 <ToastContainer
                   position="top-center"
                   autoClose={3000}
@@ -252,7 +270,7 @@ function ViewProduct() {
                   draggable
                   theme="light"
                 />
-                <button className="custom-btn">Buy now</button>
+                <button className="custom-btn" onClick={()=>handleAddToWishlist(product._id)}>Add to wishlist</button>
               </Grid>
             </Grid>
           </Grid>

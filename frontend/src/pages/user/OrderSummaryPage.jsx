@@ -141,6 +141,7 @@ function OrderSummaryPage() {
       orderId: data.id,
       amount: data.amount,
       productDetails: cartProducts,
+      discount:discountAmount ? discountAmount : null
     };
     const options = {
       key: "rzp_test_c63laqjRhLhKki",

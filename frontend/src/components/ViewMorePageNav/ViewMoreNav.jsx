@@ -28,13 +28,13 @@ function ViewMoreNav() {
     <Grid md={12}>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar
-          elevation={1}
+          elevation={0}
           position="static"
           sx={{
             position: "fixed",
             top: "0px",
             zIndex: "1",
-            bgcolor: "#7E30E1",
+            bgcolor: "#fff",
           }}
         >
           <Toolbar variant="dense">
@@ -43,21 +43,21 @@ function ViewMoreNav() {
               edge="start"
               color="inherit"
               aria-label="menu"
-              sx={{ mr: 2 }}
+              sx={{ mr: 2 ,color:'#7E30E1'}}
             >
               <ArrowBackIcon />
             </IconButton>
-            <Typography variant="h6" color="inherit" component="div">
+            <Typography variant="h6" color="inherit" component="div" sx={{color:"black",fontFamily:"montserrat",fontWeight:800}}>
               {caps}
             </Typography>
             <Grid position={"absolute"} right={30}>
               <IconButton
-                sx={{ color: "white" }}
+                sx={{ color: "black" }}
                 onClick={() => navigate("/user/wishlist")}
               >
                 <FavoriteIcon />
               </IconButton>
-              <IconButton sx={{ color: "white" }}>
+              <IconButton sx={{ color: "black" }}>
                 <ShoppingCartOutlinedIcon />
               </IconButton>
             </Grid>
