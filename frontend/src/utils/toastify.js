@@ -154,6 +154,31 @@ const notifyUsernameUpdated = () => {
   });
 };
 
+const notifyPasswordChange = () => {
+  toast.success("Password changed successfully!", {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+};
+const notifyPasswordMatchError = () => {
+  toast.error("Wrong current password!", {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+};
+
 export {
   notify,
   notifyErr,
@@ -167,4 +192,6 @@ export {
   notifyAddToWishlist,
   notifyOrderCancel,
   notifyUsernameUpdated,
+  notifyPasswordChange,
+  notifyPasswordMatchError
 };

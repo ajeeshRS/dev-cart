@@ -613,6 +613,39 @@ const updateUserName = asyncHandler(async (req, res) => {
   }
 });
 
+const resetPassword = asyncHandler(async (req, res) => {
+  try {
+    const data = req.body.data;
+    const id = req.user.id;
+    const userExist = await user.findById(id);
+    const updatedFields = {};
+
+    if (data.newPassword) {
+      const hashedPassword = await bcrypt.hash(data.newPassword, 10);
+      updatedFields.password = hashedPassword;
+
+    }
+
+    if (
+      userExist &&
+      (await bcrypt.compare(data.currentPassword, userExist.password))
+    ) {
+      const result = await user.findByIdAndUpdate(id, updatedFields, {
+        new: true,
+      });
+      if (result) {
+        res.status(200).json("password changed!")
+      }
+    } else {
+      console.log("password doesnt match");
+      res.status(400).json("password doesnt match")
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json("some internal error occured!");
+  }
+});
+
 module.exports = {
   registerUser,
   loginUser,
@@ -641,4 +674,5 @@ module.exports = {
   getOrder,
   deleteOrder,
   updateUserName,
+  resetPassword,
 };

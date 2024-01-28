@@ -73,8 +73,9 @@ function UserSignup() {
       flexDirection={"column"}
       justifyContent={"center"}
       alignItems={"center"}
+      mt={2}
     >
-      <Grid pb={5}>
+      <Grid pb={4}>
         <Typography
           sx={{ fontFamily: "montserrat", fontWeight: 600, fontSize: "22px" }}
         >
@@ -86,7 +87,7 @@ function UserSignup() {
           onSubmit={submitUserData}
           style={{ display: "flex", flexDirection: "column" }}
         >
-          <label htmlFor="email">Email</label>
+          <label style={{fontFamily:"poppins"}} htmlFor="email">Email</label>
           <input
             type="text"
             id="email"
@@ -97,7 +98,7 @@ function UserSignup() {
             className="signup-form"
           />
 
-          <label htmlFor="username">Username</label>
+          <label style={{fontFamily:"poppins"}} htmlFor="username">Username</label>
           <input
             type="text"
             id="username"
@@ -108,7 +109,7 @@ function UserSignup() {
             className="signup-form"
           />
 
-          <label htmlFor="password">Password</label>
+          <label style={{fontFamily:"poppins"}} htmlFor="password">Password</label>
           <input
             type="password"
             id="password"
@@ -120,7 +121,7 @@ function UserSignup() {
             className="signup-form"
           />
 
-          <label htmlFor="confirm-password">Confirm Password</label>
+          <label style={{fontFamily:"poppins"}} htmlFor="confirm-password">Confirm Password</label>
           <input
             type="password"
             id="confirm-password"
@@ -132,15 +133,13 @@ function UserSignup() {
             className="signup-form"
           />
 
-          <Grid md={12} display={"flex"} justifyContent={"center"}>
-            <Button
-              className="signup-button"
-              sx={{ marginTop: "15px" }}
-              variant="contained"
+          <Grid md={12} mt={3} display={"flex"} justifyContent={"center"}>
+            <button
+              className="custom-btn"
               type="submit"
             >
               Signup
-            </Button>
+            </button>
             <ToastContainer
               position="top-center"
               autoClose={3000}
@@ -155,7 +154,7 @@ function UserSignup() {
           </Grid>
         </form>
         <Grid md={12} display={"flex"} justifyContent={"center"} mt={3}>
-          <Typography>
+          <Typography sx={{fontFamily:"poppins"}}>
             Already have an account?{" "}
             <Link
               className="login-link"

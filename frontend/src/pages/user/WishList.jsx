@@ -89,7 +89,7 @@ function WishList() {
               </Typography>
               <Grid position={"absolute"} right={30}>
                 <IconButton
-                  sx={{ color: "white" }}
+                  sx={{ color: "black" }}
                   onClick={() => navigate("/user/cart")}
                 >
                   <ShoppingCartOutlinedIcon />

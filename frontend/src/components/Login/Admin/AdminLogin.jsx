@@ -88,15 +88,10 @@ function AdminLogin() {
             className="login-form"
           />
 
-          <Grid md={12} display={"flex"} justifyContent={"center"}>
-            <Button
-              className="login-button"
-              sx={{ marginTop: "15px" }}
-              variant="contained"
-              type="submit"
-            >
+          <Grid md={12} mt={3} display={"flex"} justifyContent={"center"}>
+            <button className="custom-btn" type="submit">
               Login
-            </Button>
+            </button>
           </Grid>
         </form>
       </Grid>

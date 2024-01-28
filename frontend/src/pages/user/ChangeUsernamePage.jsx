@@ -25,6 +25,15 @@ function ChangeUsernamePage() {
     formState: { errors },
   } = useForm();
 
+  const style = {
+    width: "300px",
+    height: "35px",
+    border: "1px solid #E5E5E5",
+    borderRadius: "4px",
+    marginTop: "5px",
+    paddingLeft: "5px",
+  };
+
   const [userDetails, setUserDetails] = useState(null);
 
   const fetchUserInfo = async () => {
@@ -130,20 +139,23 @@ function ChangeUsernamePage() {
             Username
           </Typography>
           <input
-            style={{
-              width: "200px",
-              height: "35px",
-              borderRadius: "5px",
-              border: "1px solid grey",
-              paddingLeft: "5px",
-              marginBottom: "15px",
-            }}
+            style={style}
             {...register("userName", { required: true })}
-            placeholder="Type your new username"
+            placeholder="Enter your new username"
           />
           {errors.userName && <p>username is required.</p>}
 
-          <button type="submit" className="custom-btn">
+          <button type="submit" style={{
+              marginTop: "20px",
+              width: "310px",
+              height: "30px",
+              borderRadius: "3px",
+              backgroundColor: "#7E30E1",
+              color: "#fff",
+              border: "0",
+              cursor: "pointer",
+              fontFamily: "poppins",
+            }}>
             Submit
           </button>
           <ToastContainer

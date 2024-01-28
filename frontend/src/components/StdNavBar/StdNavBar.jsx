@@ -21,8 +21,7 @@ function StdNavBar() {
       className="app-bar"
       sx={{
         height: "10svh",
-        backgroundColor: "#FCFDF2",
-        boxShadow: "0px 1px 5px 0px rgb(194, 194, 194)",
+        backgroundColor: "#fff",
       }}
     >
       <Grid
@@ -53,11 +52,14 @@ function StdNavBar() {
                 xs: "25px",
               },
               fontWeight: "800",
-              fontFamily: "montserrat",
+              fontFamily: "Pacifico",
               cursor: "pointer",
             }}
           >
-            Dev Cart<span className="span-el">.</span>
+            DevCart{" "}
+            <span className="span-el" style={{ color: "#7E30E1" }}>
+              .
+            </span>
           </Typography>
         </Grid>
       </Grid>

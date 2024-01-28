@@ -40,12 +40,13 @@ function AdminNavBar({ admin }) {
   };
   return (
     <AppBar
+    elevation={0}
       position="fixed"
       className="app-bar"
       sx={{
         height: "10svh",
         backgroundColor: "#fff",
-        boxShadow: "0px 1px 5px 0px rgb(194, 194, 194)",
+        // boxShadow: "0px 1px 5px 0px rgb(194, 194, 194)",
       }}
     >
       <Grid
@@ -78,11 +79,11 @@ function AdminNavBar({ admin }) {
                 xs: "25px",
               },
               fontWeight: "800",
-              fontFamily: "montserrat",
+              fontFamily: "Pacifico",
               cursor: "pointer",
             }}
           >
-            Dev Cart<span className="span-el">.</span>
+            DevCart <span className="span-el" style={{color:'#7E30E1'}}>.</span>
           </Typography>
         </Grid>
 

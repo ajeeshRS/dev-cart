@@ -10,6 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import {FavoriteBorderOutlined} from "@mui/icons-material"
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getHeaders } from "../../utils/auth";
@@ -121,7 +122,7 @@ function UserCartPage() {
                   sx={{ color: "black" }}
                   onClick={() => navigate("/user/wishlist")}
                 >
-                  <FavoriteIcon />
+                  <FavoriteBorderOutlined />
                 </IconButton>
               </Grid>
             </Toolbar>

@@ -70,7 +70,7 @@ function UserLogin() {
           onSubmit={submitLoginData}
           style={{ display: "flex", flexDirection: "column" }}
         >
-          <label htmlFor="email">Email</label>
+          <label style={{fontFamily:"poppins"}} htmlFor="email">Email</label>
           <input
             type="text"
             id="email"
@@ -80,7 +80,7 @@ function UserLogin() {
             onChange={valueChange}
             value={loginData.email}
           />
-          <label htmlFor="password">Password</label>
+          <label style={{fontFamily:"poppins"}} htmlFor="password">Password</label>
           <input
             type="password"
             id="password"
@@ -91,15 +91,13 @@ function UserLogin() {
             value={loginData.password}
           />
 
-          <Grid md={12} display={"flex"} justifyContent={"center"}>
-            <Button
-              className="login-button"
-              sx={{ marginTop: "15px" }}
-              variant="contained"
+          <Grid md={12} mt={3} display={"flex"} justifyContent={"center"}>
+            <button
+              className="custom-btn"
               type="submit"
             >
               Login
-            </Button>
+            </button>
             <ToastContainer
               position="top-center"
               autoClose={3000}
@@ -115,7 +113,7 @@ function UserLogin() {
         </form>
 
         <Grid md={12} display={"flex"} justifyContent={"center"} mt={3}>
-          <Typography>
+          <Typography sx={{fontFamily:"poppins"}}>
             Don&apos;t have an account?{" "}
             <Link
               className="signup-link"

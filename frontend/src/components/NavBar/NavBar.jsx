@@ -12,51 +12,64 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { AccountCircle, Favorite, FavoriteBorder, FavoriteBorderOutlined, FavoriteOutlined, Home, HomeMaxOutlined, HomeOutlined, Logout, Person, PersonOffOutlined, PersonOutline, SearchOutlined, ShoppingCart, ShoppingCartOutlined } from "@mui/icons-material";
+import {
+  AccountCircle,
+  Favorite,
+  FavoriteBorder,
+  FavoriteBorderOutlined,
+  FavoriteOutlined,
+  Home,
+  HomeMaxOutlined,
+  HomeOutlined,
+  Logout,
+  Person,
+  PersonOffOutlined,
+  PersonOutline,
+  SearchOutlined,
+  ShoppingCart,
+  ShoppingCartOutlined,
+} from "@mui/icons-material";
 import DrawerComponent from "./DrawerComponent";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { getHeaders } from "../../utils/auth";
 import { useSearchContext } from "../../context/SearchContext";
 
 function NavBar({ setSearchResults }) {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
 
-  const [searchTerm,setSearchTerm] = useState('')
-  const location = useLocation()
-  const [cartItems,setCartItems]= useState([])
+  const [searchTerm, setSearchTerm] = useState("");
+  const location = useLocation();
+  const [cartItems, setCartItems] = useState([]);
   const { updateSearchResults } = useSearchContext();
 
-  
-  const handleOnChange =(e)=>{
-      e.preventDefault()
-      setSearchTerm(e.target.value);
-  }
+  const handleOnChange = (e) => {
+    e.preventDefault();
+    setSearchTerm(e.target.value);
+  };
 
   // to perform search query
-  const searchButton=async()=>{
-
+  const searchButton = async () => {
     try {
-      
-      const res = await axios.get(`http://localhost:3001/user/search/${searchTerm}`,{
-        headers:getHeaders()
-      })
-      if(res.status===200){
-        updateSearchResults(res.data)
-        setSearchTerm('')
-        navigate("/user/search")
+      const res = await axios.get(
+        `http://localhost:3001/user/search/${searchTerm}`,
+        {
+          headers: getHeaders(),
+        }
+      );
+      if (res.status === 200) {
+        updateSearchResults(res.data);
+        setSearchTerm("");
+        navigate("/user/search");
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-
-
+  };
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -70,29 +83,29 @@ function NavBar({ setSearchResults }) {
 
   const handleLogOut = () => {
     localStorage.clear();
-    navigate("/user/login")
+    navigate("/user/login");
   };
 
-  const getCartItems =async()=>{
+  const getCartItems = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/user/cart",{
-        headers:getHeaders()
-      })
-      setCartItems(res.data)
+      const res = await axios.get("http://localhost:3001/user/cart", {
+        headers: getHeaders(),
+      });
+      setCartItems(res.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-  const handleKeyPress=(e)=>{
-    if(e.key==="Enter"){
-      searchButton()
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      searchButton();
     }
-    }
+  };
 
-useEffect(()=>{
-getCartItems()
-},[cartItems])
+  useEffect(() => {
+    getCartItems();
+  }, [cartItems]);
 
   return (
     <AppBar
@@ -102,7 +115,6 @@ getCartItems()
       sx={{
         height: "10svh",
         backgroundColor: "#ffff",
-        
       }}
     >
       <Grid
@@ -137,12 +149,34 @@ getCartItems()
               cursor: "pointer",
             }}
           >
-            DevCart <span className="span-el" style={{color:'#7E30E1'}}>.</span>
+            DevCart{" "}
+            <span className="span-el" style={{ color: "#7E30E1" }}>
+              .
+            </span>
           </Typography>
         </Grid>
         <Grid md={4} width={"500px"}>
-          <input style={{width:"400px",height:"40px",borderRadius:"50px"}} onChange={handleOnChange} onKeyDown={handleKeyPress} type="text" value={searchTerm} className="search-input" placeholder="Search products" />
-          <IconButton className="search-btn"   onClick={searchButton} sx={{color:'#fff',backgroundColor:"#7E30E1",marginLeft:"10px","&:hover": { color: "#fff",backgroundColor:"#6018BE" },transition:"0.3s ease-in"}}  size="medium">
+          <input
+            style={{ width: "400px", height: "40px", borderRadius: "50px" }}
+            onChange={handleOnChange}
+            onKeyDown={handleKeyPress}
+            type="text"
+            value={searchTerm}
+            className="search-input"
+            placeholder="Search products"
+          />
+          <IconButton
+            className="search-btn"
+            onClick={searchButton}
+            sx={{
+              color: "#fff",
+              backgroundColor: "#7E30E1",
+              marginLeft: "10px",
+              "&:hover": { color: "#fff", backgroundColor: "#6018BE" },
+              transition: "0.3s ease-in",
+            }}
+            size="medium"
+          >
             <SearchOutlined />
           </IconButton>
         </Grid>
@@ -167,73 +201,90 @@ getCartItems()
             <DrawerComponent />
           ) : (
             <>
-            
               <Link to={"/user/wishlist"} className="link-tag">
-              <Badge badgeContent={""}>
-                <FavoriteBorderOutlined sx={{color:"black"}}/>
-                <Typography className="typo" fontFamily={"poppins"} pl={1}>Wishlist</Typography>
+                <Badge badgeContent={""}>
+                  <FavoriteBorderOutlined sx={{ color: "black" }} />
+                  <Typography className="typo" fontFamily={"poppins"} pl={1}>
+                    Wishlist
+                  </Typography>
                 </Badge>
               </Link>
               <Link to={"/user/cart"}>
-              <Badge badgeContent={cartItems.length} color="primary">
-                <ShoppingCartOutlined sx={{color:"black"}} />
-                <Typography className="typo" fontFamily={"poppins"} pl={1}>Cart</Typography>
-
-              </Badge>
-              
+                <Badge badgeContent={cartItems.length} color="primary">
+                  <ShoppingCartOutlined sx={{ color: "black" }} />
+                  <Typography className="typo" fontFamily={"poppins"} pl={1}>
+                    Cart
+                  </Typography>
+                </Badge>
               </Link>
               <IconButton sx={{ color: "#262626" }} onClick={handleClick}>
-                <PersonOutline/>
+                <PersonOutline />
               </IconButton>
               <Menu
-                  anchorEl={anchorEl}
-                  id="account-menu"
-                  open={open}
-                  onClose={handleClose}
-                  onClick={handleClose}
-                  PaperProps={{
-                    elevation: 0,
-                    sx: {
-                      overflow: "visible",
-                      filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                      mt: 1.5,
-                      "& .MuiAvatar-root": {
-                        width: 32,
-                        height: 32,
-                        ml: -0.5,
-                        mr: 1,
-                      },
-                      "&:before": {
-                        content: '""',
-                        display: "block",
-                        position: "absolute",
-                        top: 0,
-                        right: 14,
-                        width: 10,
-                        height: 10,
-                        bgcolor: "background.paper",
-                        transform: "translateY(-50%) rotate(45deg)",
-                        zIndex: 0,
-                      },
+                anchorEl={anchorEl}
+                id="account-menu"
+                open={open}
+                onClose={handleClose}
+                onClick={handleClose}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    overflow: "visible",
+                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                    mt: 1.5,
+                    "& .MuiAvatar-root": {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
                     },
-                  }}
-                  transformOrigin={{ horizontal: "right", vertical: "top" }}
-                  anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-                >
-                  <MenuItem onClick={()=>navigate("/user/profile")}>
+                    "&:before": {
+                      content: '""',
+                      display: "block",
+                      position: "absolute",
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      bgcolor: "background.paper",
+                      transform: "translateY(-50%) rotate(45deg)",
+                      zIndex: 0,
+                    },
+                  },
+                }}
+                transformOrigin={{ horizontal: "right", vertical: "top" }}
+                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+              >
+                <MenuItem onClick={() => navigate("/user/profile")}>
                   <ListItemIcon>
-                  <Person/>
+                    <Person sx={{ color: "#7E30E1" }} />
                   </ListItemIcon>
-                  Profile
-                  </MenuItem>
-    
-                  <MenuItem onClick={()=>handleLogOut()}>
-                    <ListItemIcon>
-                      <Logout fontSize="small" />
-                    </ListItemIcon>
-                    Logout
-                  </MenuItem>
-                </Menu>
+                  <Typography
+                    sx={{
+                      fontFamily: "poppins",
+                      color: "black",
+                      fontWeight: "500",
+                    }}
+                  >
+                    Profile
+                  </Typography>
+                </MenuItem>
+
+                <MenuItem onClick={() => handleLogOut()}>
+                  <ListItemIcon>
+                    <Logout fontSize="small" sx={{ color: "#7E30E1" }} />
+                  </ListItemIcon>
+                  <Typography
+                    sx={{
+                      fontFamily: "poppins",
+                      color: "black",
+                      fontWeight: "500",
+                    }}
+                  >
+                    Log out
+                  </Typography>
+                </MenuItem>
+              </Menu>
             </>
           )}
         </Grid>
