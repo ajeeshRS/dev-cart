@@ -179,6 +179,54 @@ const notifyPasswordMatchError = () => {
   });
 };
 
+const notifyCouponError = (message) => {
+  toast.error(message, {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+};
+const notifyCouponAppliedSuccess = () => {
+  toast.success("Coupon applied !", {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+};
+const notifyCouponAddedSuccess = () => {
+  toast.success("Coupon added !", {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+};
+const notifyCouponAddingError = (message) => {
+  toast.error(message, {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+};
 export {
   notify,
   notifyErr,
@@ -193,5 +241,9 @@ export {
   notifyOrderCancel,
   notifyUsernameUpdated,
   notifyPasswordChange,
-  notifyPasswordMatchError
+  notifyPasswordMatchError,
+  notifyCouponError,
+  notifyCouponAppliedSuccess,
+  notifyCouponAddedSuccess,
+  notifyCouponAddingError,
 };

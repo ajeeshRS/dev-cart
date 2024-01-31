@@ -114,6 +114,7 @@ function AdminNavBar({ admin }) {
                     fontFamily: "montserrat",
                     fontWeight: "600",
                   }}
+                  className="nav-items"
                 >
                   Dashboard
                 </Typography>
@@ -123,6 +124,7 @@ function AdminNavBar({ admin }) {
                     fontFamily: "montserrat",
                     fontWeight: "600",
                   }}
+                  className="nav-items"
                 >
                   <Link to={"/admin/add-coupon"} style={{ textDecoration: "none", color: "#262626" }}>
                   Add coupon
@@ -135,6 +137,7 @@ function AdminNavBar({ admin }) {
                     fontFamily: "montserrat",
                     fontWeight: "600",
                   }}
+                  className="nav-items"
                 >
                   <Link
                     style={{ textDecoration: "none", color: "#262626" }}
@@ -149,6 +152,7 @@ function AdminNavBar({ admin }) {
                     fontFamily: "montserrat",
                     fontWeight: "600",
                   }}
+                  className="nav-items"
                 >
                   <Link
                     style={{ textDecoration: "none", color: "#262626" }}

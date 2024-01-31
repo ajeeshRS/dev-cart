@@ -43,7 +43,7 @@ function AllProducts({ admin }) {
       .catch((err) => console.error(err));
   };
 
-  const sortedProducts = products.sort((a,b)=>a.price-b.price)
+  const sortedProducts = products.sort((a, b) => a.price - b.price);
 
   return admin ? (
     <Grid md={12} width={"100%"} height={"90vh"} pt={15}>
@@ -198,7 +198,16 @@ function AllProducts({ admin }) {
       justifyContent={"center"}
       alignItems={"center"}
     >
-      <Typography>Loading...</Typography>
+      <Typography
+        style={{
+          fontFamily: "montserrat",
+          paddingLeft: "5px",
+          fontWeight: "500",
+          color: "grey",
+        }}
+      >
+        Loading...
+      </Typography>
     </Grid>
   );
 }

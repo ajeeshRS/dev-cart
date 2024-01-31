@@ -167,6 +167,34 @@ const deleteProduct = asyncHandler(async (req, res) => {
 
 const couponDiscount = asyncHandler(async (req, res) => {});
 
+const addCoupon = asyncHandler(async (req, res) => {
+  try {
+    const { code, discountPercentage, expiry, minPurchaseAmount } =
+      req.body.data;
+
+    const couponExist = await coupon.findOne({ code: code });
+
+    if (couponExist) {
+      console.log(couponExist);
+      return res.status(409).json("coupon exists!");
+    } else {
+      const result = await coupon.create({
+        code: code,
+        discountPercentage: discountPercentage,
+        dateCreated: Date.now(),
+        expiry: expiry,
+        minPurchaseAmount: minPurchaseAmount,
+      });
+      if (result) {
+        return res.status(201).json("Coupon added !");
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json("some internal error occured!");
+  }
+});
+
 module.exports = {
   authAdmin,
   login,
@@ -176,4 +204,5 @@ module.exports = {
   updateProduct,
   deleteProduct,
   couponDiscount,
+  addCoupon,
 };

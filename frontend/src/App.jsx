@@ -23,6 +23,7 @@ import ViewOrderPage from "./pages/user/ViewOrderPage";
 import EditProfilePage from "./pages/user/EditProfilePage";
 import ChangeUsernamePage from "./pages/user/ChangeUsernamePage";
 import ResetPasswordPage from "./pages/user/ResetPasswordPage";
+import AddCouponPage from "./pages/admin/AddCouponPage";
 
 function App() {
   return (
@@ -30,7 +31,7 @@ function App() {
       <SearchProvider>
         <Routes>
           <Route path="/admin/login" element={<AdminLoginPage />} />
-          <Route path="/admin/add-coupon" element />
+          <Route path="/admin/add-coupon" element={<AddCouponPage/>} />
           <Route path="/user/login" element={<UserLoginPage />} />
           <Route path="/user/signup" element={<UserLoginPage />} />
           <Route path="/admin/add-product" element={<AddProductPage />} />
@@ -54,9 +55,6 @@ function App() {
           <Route path="/user/profile/edit-profile" element={<EditProfilePage/>}/>
           <Route path="/user/profile/edit-profile/reset-password" element={<ResetPasswordPage/>}/>
           <Route path="/user/profile/edit-profile/change-username" element={<ChangeUsernamePage/>}/>
-
-        
-
 
         </Routes>
       </SearchProvider>

@@ -411,14 +411,15 @@ const checkCoupon = asyncHandler(async (req, res) => {
       used: false,
     });
 
+    console.log(couponDetail)
     if (!couponDetail) {
       return res.status(404).json({
         valid: false,
         message: "Coupon not found or already been used.",
       });
     }
-    if (couponDetail.expiry && couponDetail.expiry < new Date()) {
-      return res.json({ valid: false, message: "Coupon has expired" });
+    if (couponDetail.expiry && couponDetail.expiry <  Date.now()) {
+      return res.status(404).json({ valid: false, message: "Coupon has expired" });
     }
     if (
       couponDetail.minPurchaseAmount &&
@@ -438,7 +439,7 @@ const checkCoupon = asyncHandler(async (req, res) => {
     console.log(error);
     res
       .status(500)
-      .json({ valid: false, message: "Error checking coupon validity" });
+      .json({ valid: false, message: "Error checking coupon code" });
   }
 });
 

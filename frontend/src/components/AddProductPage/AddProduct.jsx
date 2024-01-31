@@ -85,6 +85,21 @@ function AddProduct({ admin }) {
     }
   };
 
+  const style = {
+    width: "350px",
+    height: "30px",
+    border: "1px solid #E5E5E5",
+    borderRadius: "4px",
+    marginTop: "5px",
+    paddingLeft: "5px",
+  };
+
+  const labelStyle = {
+    fontFamily: "montserrat",
+    paddingLeft: "5px",
+    fontWeight: "500",
+    color: "grey",
+  };
   return (
     <div>
       {admin ? (
@@ -114,62 +129,77 @@ function AddProduct({ admin }) {
               onSubmit={addProductDetails}
               encType="multipart/form-data"
             >
-              <label>Title</label>
+              <label style={labelStyle}>Title</label>
               <input
                 className="input-el"
+                style={style}
                 name="title"
                 value={productData.title}
                 onChange={handleInputChange}
               />
 
-              <label>Brand</label>
+              <label style={labelStyle}>Brand</label>
               <input
                 className="input-el"
+                style={style}
                 name="brand"
                 value={productData.brand}
                 onChange={handleInputChange}
               />
 
-              <label>Category</label>
+              <label style={labelStyle}>Category</label>
               <input
                 className="input-el"
+                style={style}
                 name="category"
                 value={productData.category}
                 onChange={handleInputChange}
               />
 
-              <label>Description</label>
+              <label style={labelStyle}>Description</label>
               <input
                 className="input-el"
+                style={style}
                 name="description"
                 value={productData.description}
                 onChange={handleInputChange}
               />
 
-              <label>Price</label>
+              <label style={labelStyle}>Price</label>
               <input
                 className="input-el"
+                style={style}
                 name="price"
                 value={productData.price}
                 onChange={handleInputChange}
               />
 
-              <label>Choose file</label>
+              <label style={labelStyle}>Choose file</label>
               <input
                 className="input-el"
+                style={style}
                 type="file"
                 name="image"
                 accept="image/*"
                 onChange={handleInputChange}
               />
 
-              <Button
-                sx={{ width: "350px", marginTop: "15px" }}
-                variant="contained"
+              <button
+                style={{
+                  marginTop: "20px",
+                  width: "360px",
+                  height: "30px",
+                  borderRadius: "3px",
+                  backgroundColor: "#7E30E1",
+                  color: "#fff",
+                  border: "0",
+                  cursor: "pointer",
+                  fontFamily: "poppins",
+                }}
                 type="submit"
               >
                 Submit
-              </Button>
+              </button>
             </form>
           </Grid>
         </Grid>

@@ -16,7 +16,10 @@ import AddIcon from "@mui/icons-material/Add";
 import { getHeaders } from "../../utils/auth";
 import axios from "axios";
 import useRazorpay from "react-razorpay";
-import { notifyOrderPlaced } from "../../utils/toastify";
+import {
+  notifyCouponAppliedSuccess,
+  notifyCouponError,
+} from "../../utils/toastify";
 import { ToastContainer } from "react-toastify";
 
 function OrderSummaryPage() {
@@ -130,9 +133,12 @@ function OrderSummaryPage() {
           totalAmount - calculatedDiscountAmount;
         setDiscountAmount(calculatedDiscountAmount);
         setTotalAmountToBePaid(updatedTotalAmountToBePaid);
+        notifyCouponAppliedSuccess();
+        setCouponValue(" ");
       }
     } catch (error) {
       console.log(error);
+      notifyCouponError(error.response.data.message);
     }
   };
 
@@ -398,6 +404,17 @@ function OrderSummaryPage() {
         <button className="custom-btn" onClick={handleApplyBtn}>
           Apply
         </button>
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          theme="light"
+        />
       </Grid>
       <Divider />
       <Grid pt={5} pl={15} pr={15} pb={10}>
