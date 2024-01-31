@@ -11,6 +11,7 @@ const {
   authAdmin,
   couponDiscount,
   addCoupon,
+  getOrders,
 } = require("../controllers/adminController");
 const adminTokenValidator = require("../middlewares/adminTokenValidator");
 const path = require("path");
@@ -89,4 +90,6 @@ router.delete("/delete-product/:productId", adminTokenValidator, deleteProduct);
 router.get("/coupon-discount", couponDiscount);
 
 router.post("/add-coupon", adminTokenValidator, addCoupon);
+
+router.get("/get/orders", adminTokenValidator, getOrders);
 module.exports = router;

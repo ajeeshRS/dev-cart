@@ -6,6 +6,7 @@ const product = require("../models/productModel");
 const { response } = require("express");
 const fs = require("fs");
 const coupon = require("../models/couponModel");
+const orders = require("../models/orderDetailsModel");
 
 // getting admin
 const authAdmin = asyncHandler(async (req, res) => {
@@ -195,6 +196,20 @@ const addCoupon = asyncHandler(async (req, res) => {
   }
 });
 
+const getOrders = asyncHandler(async (req, res) => {
+  try {
+    const data = await orders.find({});
+    if (data) {
+      res.status(200).json(data);
+    } else {
+      res.status(404).json("Error in fetching data");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json("some internal error occured!");
+  }
+});
+
 module.exports = {
   authAdmin,
   login,
@@ -205,4 +220,5 @@ module.exports = {
   deleteProduct,
   couponDiscount,
   addCoupon,
+  getOrders,
 };

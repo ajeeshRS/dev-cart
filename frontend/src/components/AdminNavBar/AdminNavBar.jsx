@@ -15,9 +15,7 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
-import {
-  Logout
-} from "@mui/icons-material";
+import { Logout } from "@mui/icons-material";
 import DrawerComponent from "./DrawerComponent";
 import { useState } from "react";
 
@@ -40,7 +38,7 @@ function AdminNavBar({ admin }) {
   };
   return (
     <AppBar
-    elevation={0}
+      elevation={0}
       position="fixed"
       className="app-bar"
       sx={{
@@ -83,7 +81,10 @@ function AdminNavBar({ admin }) {
               cursor: "pointer",
             }}
           >
-            DevCart <span className="span-el" style={{color:'#7E30E1'}}>.</span>
+            DevCart{" "}
+            <span className="span-el" style={{ color: "#7E30E1" }}>
+              .
+            </span>
           </Typography>
         </Grid>
 
@@ -116,7 +117,12 @@ function AdminNavBar({ admin }) {
                   }}
                   className="nav-items"
                 >
-                  Dashboard
+                  <Link
+                    to={"/admin/dashboard"}
+                    style={{ textDecoration: "none", color: "#262626" }}
+                  >
+                    Dashboard
+                  </Link>
                 </Typography>
                 <Typography
                   sx={{
@@ -126,10 +132,12 @@ function AdminNavBar({ admin }) {
                   }}
                   className="nav-items"
                 >
-                  <Link to={"/admin/add-coupon"} style={{ textDecoration: "none", color: "#262626" }}>
-                  Add coupon
+                  <Link
+                    to={"/admin/add-coupon"}
+                    style={{ textDecoration: "none", color: "#262626" }}
+                  >
+                    Add coupon
                   </Link>
-
                 </Typography>
                 <Typography
                   sx={{
