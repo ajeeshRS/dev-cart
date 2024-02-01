@@ -188,7 +188,7 @@ function AddProduct({ admin }) {
                 style={{
                   marginTop: "20px",
                   width: "360px",
-                  height: "30px",
+                  height: "35px",
                   borderRadius: "3px",
                   backgroundColor: "#7E30E1",
                   color: "#fff",

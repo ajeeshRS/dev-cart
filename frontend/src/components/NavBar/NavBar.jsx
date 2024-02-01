@@ -126,6 +126,7 @@ function NavBar({ setSearchResults }) {
         height={"10svh"}
       >
         <Grid
+         
           md={4}
           sx={{
             marginLeft: {
@@ -155,7 +156,7 @@ function NavBar({ setSearchResults }) {
             </span>
           </Typography>
         </Grid>
-        <Grid md={4} width={"500px"}>
+        <Grid  md={4} width={"500px"}>
           <input
             style={{ width: "400px", height: "40px", borderRadius: "50px" }}
             onChange={handleOnChange}
